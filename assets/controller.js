@@ -11,27 +11,13 @@ document.addEventListener('DOMContentLoaded', function () { // for notifications
         Notification.requestPermission();
 });
 
-// app.config(function($mdThemingProvider,$mdIconProvider) {
-//   $mdThemingProvider.theme('default')
-//     .primaryPalette('blue')
-//     .accentPalette('pink');
-// });
-//
-// app.run(function ($rootScope,$timeout) {
-//     $rootScope.$on('$viewContentLoaded', ()=> {
-//       $timeout(() => {
-//         componentHandler.upgradeAllRegistered();
-//       })
-//     })
-// }); // register mdl elemenets
-
 
 // var socket= io.connect("http://protected-sierra-93361.herokuapp.com");
 var socket= io.connect("http://localhost:3000");
 
 
 app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
-    if($cookieStore.get('kfLogged'))
+    if($cookieStore.get('dbLogged'))
     {
         $state.go('home.inbox');
     }
@@ -82,17 +68,12 @@ app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
     socket.on("redirectToInbox",(user)=>{
         $state.go('home.inbox');
 
-        $cookieStore.put('kfLogged',true);
-        // $cookieStore.put('myFavorite',"em")
-        // $cookieStore.remove('myFavorite');
-        // console.log($cookieStore.get('myFavorite'));
+        $cookieStore.put('dbLogged',true);
+
     });
 
     socket.on("redirectToLogin",(user)=>{
         $state.go('login');
-
-        // window.location = "http://localhost/#!/login";
-        // window.location.reload();
     });
 
 });
@@ -101,12 +82,8 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
     $scope.orderByField = 'time';
     $scope.reverseSort = false;
 
-    // $scope.asdf = ()=>{
-    //     console.log($scope.payments);
-    // };
 
     $scope.reload =()=>{
-        // console.log('reloadings');
         location.reload();
     }
 
@@ -141,7 +118,7 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
         $scope.orders = [];
 
         if(Object.keys($scope.allInq).length>0){
-            // console.log($scope.allInq['-Kjs3Aj_BfMqilAUcgpc'].inquiryID);
+            
             console.log( $scope.allInq);
             for(k in $scope.allInq){
                 // console.log($scope.allInq[k].quotations != undefined);
@@ -192,12 +169,12 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     }
 
     var config = {
-        apiKey: "AIzaSyAOGkQMDi5sLuEWRVyyItnbMPgSRFP55-s",
-        authDomain: "khongfah-350bd.firebaseapp.com",
-        databaseURL: "https://khongfah-350bd.firebaseio.com",
-        projectId: "khongfah-350bd",
-        storageBucket: "khongfah-350bd.appspot.com",
-        messagingSenderId: "34688633867"
+        apiKey: "AIzaSyDBeAd9ZtPMV7NFMaNDAkW__qyDWjcFi_I",
+        authDomain: "dbest-7485e.firebaseapp.com",
+        databaseURL: "https://dbest-7485e.firebaseio.com",
+        projectId: "dbest-7485e",
+        storageBucket: "dbest-7485e.appspot.com",
+        messagingSenderId: "642003666233"
     };
 
 
@@ -330,16 +307,16 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
     $scope.selected = "inbox";
 
-    if(!$cookieStore.get('kfLogged')){
+    if(!$cookieStore.get('dbLogged')){
         socket.emit("getUser");
     }
 
     $scope.abc= function logshit(){
-        console.log($cookieStore.get('kfLogged'));
+        console.log($cookieStore.get('dbLogged'));
     }
 
     $scope.$watch(function() {
-        return $cookieStore.get('kfLogged');
+        return $cookieStore.get('dbLogged');
     }, function(newValue) {
         if(!newValue){
             window.location.href = "http://localhost:3000/#!/login";
@@ -365,7 +342,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     });
 
     $scope.logout = ()=>{
-        $cookieStore.remove('kfLogged');
+        $cookieStore.remove('dbLogged');
 
         window.location.reload();
 
