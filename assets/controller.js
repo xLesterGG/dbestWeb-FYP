@@ -118,8 +118,8 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
         $scope.orders = [];
 
         if(Object.keys($scope.allInq).length>0){
-            
-            console.log( $scope.allInq);
+
+            // console.log( $scope.allInq);
             for(k in $scope.allInq){
                 // console.log($scope.allInq[k].quotations != undefined);
                 // console.log($scope.users[$scope.allInq[k].inquiryOwner]!=undefined);
@@ -168,22 +168,26 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         $scope.$apply();
     }
 
-    var config = {
-        apiKey: "AIzaSyDBeAd9ZtPMV7NFMaNDAkW__qyDWjcFi_I",
-        authDomain: "dbest-7485e.firebaseapp.com",
-        databaseURL: "https://dbest-7485e.firebaseio.com",
-        projectId: "dbest-7485e",
-        storageBucket: "dbest-7485e.appspot.com",
-        messagingSenderId: "642003666233"
-    };
+    socket.emit("getConfig");
+
+    var config = {};
+    var fbApp;
+    var defaultStorage ;
 
 
-    var fbApp = firebase.initializeApp(config);
-    var defaultStorage  = fbApp.storage().ref();
+    socket.on("getConfig",(c)=>{
+        // console.log("getting config");
+        // console.log(c);
 
+        config = c;
+        fbApp = firebase.initializeApp(config);
+        defaultStorage  = fbApp.storage().ref();
+    });
 
     $scope.file_changed = function(element) {
         $scope.$apply(function(scope) {
+
+
             var imgRef = defaultStorage.child('photos'+ '/'+$stateParams.id+'/'+element.files[0].name);
 
             // mountainImagesRef.put(element.files[0]).then((snapshot)=>{
@@ -219,7 +223,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
                 }, function() {
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = uploadTask.snapshot.downloadURL;
-                    console.log(downloadURL);
+                    // console.log(downloadURL);
 
                     socket.emit("sendImage", downloadURL,$stateParams.id);
 
@@ -368,8 +372,8 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
     socket.on("recieveMessage",(msg)=>{
-        console.log('recieving message');
-        console.log(msg);
+        // console.log('recieving message');
+        // console.log(msg);
         var message = {};
         var message = msg;
 
@@ -449,7 +453,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         inqService.addInq(inquiryList);
         $scope.$apply();
 
-        console.log('updating inqs');
+        // console.log('updating inqs');
     });
 
     $scope.updateRead = (inq)=>{

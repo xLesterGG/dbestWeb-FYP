@@ -12,7 +12,7 @@ var config = {
     projectId: "dbest-7485e",
     storageBucket: "dbest-7485e.appspot.com",
     messagingSenderId: "642003666233"
-  };
+};
 
 
 
@@ -97,12 +97,17 @@ socket.on("connection",(client)=>{
     // console.log(client.id);
     // console.log(Object.keys(socket.sockets.sockets));
 
+    client.on("getConfig",()=>{
+        client.emit("getConfig",config);
+    });
+
     client.on("getUser",()=>{
         if(currentUser == undefined){
             console.log("no user")
             // if(Object.keys(socket.sockets.sockets).length<=1)
             // {
                client.emit("redirectToLogin1");
+               console.log(config);
             // }
         }
     });
