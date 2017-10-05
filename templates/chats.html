@@ -277,18 +277,21 @@
 
 
         <div class="card" style="margin-top:15px">
-            <h4 class="card-header bg-primary text-white">Items Requested <span class="badge badge-light text-primary">{{currentInq1.items.length}}</span></h4>
+            <h4 class="card-header bg-primary text-white">Items Requested <span class="badge badge-light text-primary">{{currentInq.items.length}}</span></h4>
 
             <div id="bearings">
-                <div class="card-body" style="border-bottom:1px solid #e6e6e6" data-ng-repeat="b in currentInq1.items track by $index">
+                <div class="card-body" style="border-bottom:1px solid #e6e6e6" data-ng-repeat="b in currentInq.items track by $index">
                     <a href><img style="width:15%;height:auto" ng-show="b.imageUrl!=''" class="image float-md-right" ng-click="view()" ng-src="{{b.imageUrl}}" alt="item picture"/></a>
 
-                    <h4 class="card-title" ng-show="b.serialNo!=''">Requested Quantity: {{b.quantity}}</h4>
+                    <h4 class="card-title" ng-show="b.itemName!=''">Item name: {{b.itemName}}</h4>
                     #{{$index+1}}
 
-                    <h4 class="card-title" ng-show="b.serialNo==''">Item name not provided</h4>
+                    <h4 class="card-title" ng-show="b.itemName==''">Item name not provided</h4>
 
-                    <table>
+                    <h6 ng-show="b.quantity!=''">Requested Quantity: {{b.quantity}}</h6>
+
+                    <span ng-if="b.extraComment==''" class="text-muted">No Comments provided   </span>
+                    <table ng-if="b.extraComment!=''">
                         <tr>
                             <td>
                                 <b>Description: </b>
@@ -349,19 +352,18 @@
                                     </th>
                                 </tr>
 
-                                <tr ng-repeat="s in currentInq.items track by $index">
+                                <tr ng-repeat="s in currentInq1.items track by $index">
                                     <td>
                                         {{$index+1}}
                                     </td>
 
                                     <td>
-
-                                        <input type="text" class="form-control no-border input-sm" data-ng-model="bearing[$index]" data-ng-change="updateBearings($index,bearing[$index])"/>
+                                        <input type="text" class="form-control no-border input-sm" data-ng-init="itemsx[$index]='{{s.itemName}}'" value="{{s.itemName}}" data-ng-model="itemsx[$index]" data-ng-change="updateItems($index,itemsx[$index])" />
 
                                     </td>
 
                                     <td>
-                                        <input type="number" style="width:5vw" class="input-sm form-control no-border" data-ng-model="quantity[$index]" size="1" data-ng-init="quantity[$index]=0" ng-change="getTotal();"/>
+                                        <input type="number" style="width:5vw" class="input-sm form-control no-border" data-ng-model="quantity[$index]" size="1" data-ng-init="quantity[$index]=0" ng-change="getTotal();" />
                                     </td>
 
                                     <td>
@@ -457,7 +459,7 @@
         <!-- quotation end--->
 
         <div class="card" style="margin-top:60px">
-            <h4 class="card-header bg-primary text-white">Quotations sent <span class="badge badge-light text-primary">{{currentInq1.quotations.length}}</span> </h4>
+            <h4 class="card-header bg-primary text-white">Quotations sent <span class="badge badge-light text-primary">{{currentInq.quotations.length}}</span> </h4>
 
 
                 <div id="quotes">
@@ -515,13 +517,13 @@
                                             </thead>
 
                                             <tbody>
-                                                <tr ng-repeat="s in q.quoteBearings track by $index">
+                                                <tr ng-repeat="s in q.quoteItems track by $index">
                                                     <td scope="row">
                                                         {{$index+1}}
                                                     </td>
 
                                                     <td>
-                                                        {{s.serialNo}}
+                                                        {{s.itemName}}
                                                     </td>
 
                                                     <td>

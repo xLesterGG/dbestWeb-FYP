@@ -540,7 +540,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
 
 
     $scope.addRow = ()=>{
-        $scope.currentInq.items.push({});
+        $scope.currentInq1.items.push({});
 
         console.log($scope.currentInq);
         console.log($scope.currentInq1);
@@ -550,58 +550,48 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
     $scope.removeRow= (index)=>{
         if(index>-1)
         {
-            $scope.currentInq.items.splice(index,1);
+            $scope.currentInq1.items.splice(index,1);
             $scope.ppu.splice(index,1);
             $scope.quantity.splice(index,1);
             // $scope.total.splice(index,1);
 
-            $scope.bearing.splice(index,1);
+            $scope.item1.splice(index,1);
 
             // console.log($scope.total);
             $scope.getTotal();
         }
     };
 
-    $scope.aaa = (a)=>{
-        console.log(a);
-    }
-
     $scope.getInq = ()=>{
         $scope.allInq = inqService.getInq();
 
         $scope.currentInq = angular.copy($scope.allInq[$scope.chatID]);
+        if($scope.currentInq)
+        console.log($scope.currentInq);
 
         if($scope.currentInq1 == undefined)
         {
             $scope.currentInq1 = angular.copy($scope.currentInq);
         }
 
-
-
         if($scope.currentInq!=undefined)
         {
             for(var i=0;i<$scope.currentInq['items'].length;i++ ){
-                $scope.item1.push($scope.currentInq['items'][i].serialNo);
+                $scope.item1.push($scope.currentInq['items'][i].itemName);
             }
             // console.log($scope.users);
             $scope.currentUser = $scope.users[$scope.currentInq.inquiryOwner];
             // console.log($scope.currentUser);
         }
-
-
-
-
     };
 
-
-    $scope.updateBearings = (index,serial)=>{
-        $scope.item1[index] = serial;
-    };
 
     $scope.ppu = [];
     $scope.quantity = [];
     $scope.total = [];
-    $scope.bearing= [];
+    // $scope.bearing= [];
+
+    $scope.itemsx = [] ;
     $scope.gTotal = 0;
 
     $scope.getTotal = ()=>{
@@ -620,33 +610,32 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
 
         if($scope.discount && $scope.realTotal != 0){
 
-            // $scope.$apply();
-            // console.log("total " + total);
-
-            console.log($scope.dis);
-            console.log($scope.realTotal* $scope.dis/100 );
-
+            // console.log($scope.dis);
+            // console.log($scope.realTotal* $scope.dis/100 );
 
             total = total - ($scope.realTotal* $scope.dis/100) ;
-
         }
 
         $scope.gTotal = total;
     };
 
 
+    $scope.updateItems = (index,itemName)=>{
+        $scope.item1[index] = itemName;
+    };
+
     $scope.sendQuote = ()=>{
         $scope.data = [];
         // console.log($scope.ppu);
 
         for(var i = 0; i < $scope.ppu.length;i++){
-            var serial = $scope.item1[i];
+            var name = $scope.item1[i];
             var q = $scope.quantity[i];
             var ppu = $scope.ppu[i];
             var t = $scope.total[i];
 
             var c = {};
-            c['serialNo']= serial;
+            c['itemName']= name;
             c['quantity'] = q;
             c['pricePerUnit'] = ppu;
             c['total'] = q * ppu;
@@ -656,7 +645,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
         }
 
         $scope.tosend = {};
-        $scope.tosend.quoteBearings = $scope.data;
+        $scope.tosend.quoteItems = $scope.data;
 
         $scope.tosend.discountAmount = $scope.realTotal* $scope.dis/100;
         $scope.tosend.discountPercent = $scope.dis;
@@ -666,8 +655,9 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
         $scope.tosend.rTotal = rT;
         $scope.tosend.gTotal = $scope.gTotal;
 
-
         socket.emit("sendQuote",$scope.tosend,$scope.currentInq);
+        console.log($scope.tosend.quoteItems);
+        console.log($scope.currentInq.items);
 
         var toSend = {};
         toSend.dest = $scope.chatID;
@@ -690,7 +680,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
     $scope.sendMessage2 = ()=>{
         if($scope.inputMessage!=''){
             var toSend = {};
-            console.log($scope.inputMessage);
+            // console.log($scope.inputMessage);
             toSend.dest = $scope.chatID;
             toSend.mess = $scope.inputMessage;
             socket.emit("sendMessage",toSend,$scope.currentInq.inquiryOwner);
@@ -704,7 +694,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
 
     $scope.updateRead = ()=>{
         socket.emit("updateLastRead2",$scope.chatID);
-        console.log('chatboxctrl');
+        // console.log('chatboxctrl');
     };
 
 });
