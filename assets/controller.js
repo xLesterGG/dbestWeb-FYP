@@ -711,6 +711,13 @@ app.filter('customFilter', function(){
     };
 });
 
+
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});
+
 app.filter('inqFilter', function(){
     return function (items,id) {
         var filtered = [];
