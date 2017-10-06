@@ -115,24 +115,20 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
     $scope.getInq = ()=>{
         $scope.allInq = inqService.getInq();
 
-        $scope.orders = [];
+        $scope.payments = [];
 
         if(Object.keys($scope.allInq).length>0){
 
-            // console.log( $scope.allInq);
             for(k in $scope.allInq){
-                // console.log($scope.allInq[k].quotations != undefined);
-                // console.log($scope.users[$scope.allInq[k].inquiryOwner]!=undefined);
-                // console.log("           ");
-
                 if($scope.allInq[k].quotations != undefined && $scope.users[$scope.allInq[k].inquiryOwner]!=undefined){
                     // console.log("very true");
                     for(var i =0; i< $scope.allInq[k].quotations.length; i++){
-                        if($scope.allInq[k].quotations[i].confirmation!=undefined)
+                        if($scope.allInq[k].quotations[i].payment!=undefined)
                         {
 
-                            $scope.toAdd = $scope.allInq[k].quotations[i].confirmation;
-                            $scope.toAdd.time = $scope.allInq[k].quotations[i].confirmation.time;
+                            $scope.toAdd = $scope.allInq[k].quotations[i].payment;
+                            $scope.toAdd.time = $scope.allInq[k].quotations[i].payment.paymentDate;
+
 
                             // console.log(new Date($scope.allInq[k].quotations[i].payment.paymentDate));
                             $scope.toAdd.inquiryID = $scope.allInq[k].inquiryID;
@@ -145,11 +141,11 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
                             $scope.toAdd.address = $scope.users[$scope.allInq[k].inquiryOwner].address;
                             $scope.toAdd.contact = $scope.users[$scope.allInq[k].inquiryOwner].contact
                             $scope.toAdd.email = $scope.users[$scope.allInq[k].inquiryOwner].email
-                            $scope.toAdd.comname = $scope.users[$scope.allInq[k].inquiryOwner].comname
+                            // $scope.toAdd.comname = $scope.users[$scope.allInq[k].inquiryOwner].comname
 
 
-
-                            $scope.orders.push($scope.toAdd);
+                            $scope.payments.push($scope.toAdd);
+                            console.log($scope.payments)
                         }
                     }
                 }

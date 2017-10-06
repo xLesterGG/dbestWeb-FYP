@@ -2,13 +2,13 @@
     <div class="container" data-ng-controller="historyCtrl" ng-init="getInq();updateUsers()">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="display-3">Orders</h2>
+                <h2 class="display-3">Payment</h2>
 
                 <table class="table">
                     <thead>
                         <tr>
                             <th data-ng-click="orderByField='date'; reverseSort = !reverseSort">
-                                Confirmation Time
+                                Payment Time
 
                                 <span ng-show="orderByField == 'date'">
                                     <span ng-show="!reverseSort" class="glyphicon glyphicon-chevron-up"></span>
@@ -17,9 +17,9 @@
 
                             </th>
 
-                            <!-- <th>
+                            <th>
                                 Transaction ID
-                            </th> -->
+                            </th>
 
                             <th data-ng-click="orderByField='customer'; reverseSort = !reverseSort">
                                 Customer
@@ -30,7 +30,7 @@
                             </th>
 
                             <th data-ng-click="orderByField='paymentState'; reverseSort = !reverseSort">
-                                Order Status
+                                Payment Status
                                 <span ng-show="orderByField == 'paymentState'">
                                     <span ng-show="!reverseSort" class="glyphicon glyphicon-chevron-up"></span>
                                     <span ng-show="reverseSort" class="glyphicon glyphicon-chevron-down"></span>
@@ -61,18 +61,18 @@
                     </thead>
 
                     <tbody>
-                        <tr data-ng-repeat="p in orders|orderBy:orderByField:reverseSort">
+                        <tr data-ng-repeat="p in payments|orderBy:orderByField:reverseSort">
                             <td>
                                 {{p.time| date: 'medium'}}
                             </td>
 
-                            <!-- <td>
+                            <td>
                                 {{p.paymentID}}
-                            </td> -->
+                            </td>
 
                             <td>
 
-                                <div id="xymodal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div id="xymodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header bg-primary">
@@ -132,7 +132,7 @@
 
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <h6>Organization:</h6>
+                                                                <h6>IC:</h6>
                                                             </div>
 
                                                             <div class="col-md-8">
@@ -193,8 +193,6 @@
                                                     </tbody>
 
 
-
-
                                                 </table>
                                             </div>
 
@@ -207,25 +205,19 @@
 
                                 </div>
 
-
-                                <!-- <span  data-toggle="modal" data-target="#xymodal" class="badge badge-pill badge-primary">{{p.customer}}</span> -->
-                                <!-- <a href class="badge badge-primary" data-toggle="modal" data-target="#xymodal">{{p.customer}}</a> -->
                                 <a href data-toggle="modal" data-target="#xymodal">{{p.customer}}</a>
-                                <!-- <button data-toggle="modal" data-target="#xymodal" class="btn btn-primary btn-sm" type="button">
-                                    {{p.customer}}
-                                </button> -->
 
 
                             </td>
 
                             <td>
-                                <span data-ng-if="p.confirm == true">
-                                    <span class="text-success">Confirmed</span>
+                                <span data-ng-if="p.paymentState == 'approved'">
+                                    <span class="text-success">Approved</span>
                                 </span>
 
-                                <span data-ng-if="p.confirm != true">
+                                <!-- <span data-ng-if="p.paymentState != approved">
                                     <span class="text-danger">Not confirmed</span>
-                                </span>
+                                </span> -->
                             </td>
 
 
