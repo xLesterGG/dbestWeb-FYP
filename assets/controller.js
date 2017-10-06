@@ -542,8 +542,6 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
     $scope.addRow = ()=>{
         $scope.currentInq1.items.push({});
 
-        console.log($scope.currentInq);
-        console.log($scope.currentInq1);
         $scope.item1.push('');
     };
 
@@ -569,7 +567,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
         if($scope.currentInq)
         console.log($scope.currentInq);
 
-        if($scope.currentInq1 == undefined)
+        if($scope.currentInq != undefined)
         {
             $scope.currentInq1 = angular.copy($scope.currentInq);
         }
@@ -714,7 +712,9 @@ app.filter('customFilter', function(){
 
 app.filter('reverse', function() {
   return function(items) {
-    return items.slice().reverse();
+      if(items){
+          return items.slice().reverse();
+      }
   };
 });
 
