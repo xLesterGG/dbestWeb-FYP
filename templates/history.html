@@ -2,7 +2,7 @@
     <div class="container" data-ng-controller="historyCtrl" ng-init="getInq();updateUsers()">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="display-3">Payment</h2>
+                <h2 class="display-4">Payments</h2>
 
                 <table class="table">
                     <thead>
@@ -278,13 +278,13 @@
                                                     </thead>
 
                                                     <tbody>
-                                                        <tr ng-repeat="s in p.quote.quoteBearings track by $index">
+                                                        <tr ng-repeat="s in p.quote.quoteItems track by $index">
                                                             <td scope="row">
                                                                 {{$index+1}}
                                                             </td>
 
                                                             <td>
-                                                                {{s.serialNo}}
+                                                                {{s.itemName}}
                                                             </td>
 
                                                             <td>

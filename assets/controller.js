@@ -145,7 +145,7 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 
                             $scope.payments.push($scope.toAdd);
-                            console.log($scope.payments)
+                            // console.log($scope.payments)
                         }
                     }
                 }
@@ -164,7 +164,9 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         $scope.$apply();
     }
 
-    socket.emit("getConfig");
+    if(firebase.apps.length === 0){
+        socket.emit("getConfig");
+    }
 
     var config = {};
     var fbApp;
@@ -172,9 +174,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
     socket.on("getConfig",(c)=>{
-        // console.log("getting config");
-        // console.log(c);
-
+        console.log('getting on chat');
         config = c;
         fbApp = firebase.initializeApp(config);
         defaultStorage  = fbApp.storage().ref();
@@ -186,10 +186,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
             var imgRef = defaultStorage.child('photos'+ '/'+$stateParams.id+'/'+element.files[0].name);
 
-            // mountainImagesRef.put(element.files[0]).then((snapshot)=>{
-            // console.log('uploaded');
-            // })
-
             var fileReader = new FileReader();
             fileReader.onload = ()=>{
                 $scope.loadedFile = fileReader.result;
@@ -198,11 +194,9 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
             fileReader.readAsDataURL(element.files[0]);
 
-
             $('#imgModal').modal('show');
 
             var files = element.files; //FileList object
-
 
             $scope.upload = ()=>{
                 $('#imgModal').modal('hide');
@@ -448,18 +442,123 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
         inqService.addInq(inquiryList);
         $scope.$apply();
-
-        // console.log('updating inqs');
     });
 
     $scope.updateRead = (inq)=>{
-        // console.log(inq);
-        // console.log('with inq');
+
         socket.emit("updateLastRead",inq);
     };
+});
 
+
+
+app.controller("addProductCtrl",($scope,$state)=>{
+    var selected = false;
+    // console.log(firebase.apps.length);
+
+    var config = {};
+    var fbApp;
+    var defaultStorage ;
+
+    // if(firebase.apps.length === 0)
+    // {
+    //     socket.emit("getConfig");
+    //
+    // }else{
+    //     defaultStorage  = firebase.storage().ref();
+    // }
+    //
+    // socket.on("getConfig",(c)=>{
+    //     console.log('getting on product');
+    //
+    //     config = c;
+    //     fbApp = firebase.initializeApp(config);
+    //     defaultStorage  = fbApp.storage().ref();
+    // });
+    // if(!firebase.apps.length){
+    //     socket.emit("getConfig");
+    // }
+
+    // for(var i = 0; i <10 ; i --){
+    //     if(firebase.apps.length){
+    //         break;
+    //     }
+    // }
+
+    if(!firebase.apps.length){
+        $state.go('home.inbox');
+    }
+    else{
+        defaultStorage  = firebase.storage().ref();
+    }
+
+
+    $scope.file_changed = (element)=> {
+        $scope.$apply((scope)=> {
+            console.log($scope.type);
+            selected = true;
+            var fileReader = new FileReader();
+            fileReader.onload = ()=>{
+                $scope.loadedFile = fileReader.result;
+                $scope.$apply();
+            };
+
+            fileReader.readAsDataURL(element.files[0]);
+
+            var files = element.files;
+
+            $scope.upload = ()=>{
+                console.log("trying to upload");
+                if(selected){
+                    var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+element.files[0].name);
+
+                    var uploadTask = imgRef.put(element.files[0]);
+                    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,function(snapshot) {
+
+                        $scope.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        // console.log('Upload is ' + progress + '% done');
+                    }, function(error) {
+
+                        alert("error uploading, please try again")
+                    }, function() {
+                        // Upload completed successfully, now we can get the download URL
+                        var downloadURL = uploadTask.snapshot.downloadURL;
+
+                        $scope.submitForm(downloadURL);
+
+                    });
+                }
+                else{
+                    // console.log("no picture");
+                }
+
+            }
+
+        });
+    };
+
+    $scope.submitForm = (url)=>{
+        var product = {};
+        product.productName = $scope.;
+        product.productType = $scope.type;
+        product.description = $scope.;
+        product.promotion = $scope.;
+
+        if(product.promotion){
+            product.discountPercent = $scope.disco;
+        }
+        else{
+            product.discountPercent = 0;
+        }
+
+        product.imageFileUrl = url;
+
+        socket.emit("addProduct",product);
+
+    };
 
 });
+
 
 app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,userService)=>{
 
@@ -561,7 +660,7 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
 
         $scope.currentInq = angular.copy($scope.allInq[$scope.chatID]);
         if($scope.currentInq)
-        console.log($scope.currentInq);
+        // console.log($scope.currentInq);
 
         if($scope.currentInq != undefined)
         {
@@ -603,10 +702,6 @@ app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,user
         rT = total;
 
         if($scope.discount && $scope.realTotal != 0){
-
-            // console.log($scope.dis);
-            // console.log($scope.realTotal* $scope.dis/100 );
-
             total = total - ($scope.realTotal* $scope.dis/100) ;
         }
 
@@ -760,10 +855,10 @@ $urlRouterProvider.otherwise('home/inbox');
         abstract: true,
         templateUrl: "templates/home.html"
     })
-    .state('home.admin',{
-      url:"/admin",
-      templateUrl: "templates/admin.html"
-    })
+    // .state('home.admin',{
+    //   url:"/admin",
+    //   templateUrl: "templates/admin.html"
+    // })
     //
     // .state('admin.create',{
     //   url:"/admin/create",
@@ -794,6 +889,10 @@ $urlRouterProvider.otherwise('home/inbox');
     .state('home.stats',{
         url:'/stats',
         templateUrl: "templates/stats.html"
+    })
+    .state('home.addproduct',{
+        url:'/addproduct',
+        templateUrl: "templates/addproduct.html"
     })
     // .state('/', {
     //     url: '/',

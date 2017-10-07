@@ -1,0 +1,214 @@
+<div class="container" ng-controller="addProductCtrl">
+    <h1 class="display-4">Add new product</h1>
+
+    <br />
+
+    <form>
+        <small class="form-text text-muted">Fields marked * are required</small>
+        <fieldset>
+            <legend>
+                Product Information
+            </legend>
+
+            <div class="form-group row">
+                <label for="pName" class="col-md-2 col-form-label">Product Name*</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" id="pName" placeholder="Product Name">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Product type*</label>
+
+                <div class="col-md-7">
+                    <!-- {{type}} -->
+                    <div class="form-check">
+                        <label for="paint" class="form-check-label">
+                            <input class="form-check-input" ng-init="type='paint'" type="radio" id="paint" data-ng-model="type" data-ng-value="'paint'" ng-checked="true">
+                            Paint
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label  for="powert" class="form-check-label">
+                            <input class="form-check-input" type="radio" id="powert" data-ng-model="type" data-ng-value="'powertool'">
+                            Power Tool
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label  for="handt"  class="form-check-label">
+                            <input class="form-check-input" type="radio" id="handt" data-ng-model="type" data-ng-value="'handtool'">
+                            Hand tool
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label for="waters"  class="form-check-label">
+                            <input class="form-check-input" type="radio" id="waters" data-ng-model="type" data-ng-value="'waterseries'">
+                            Water Series
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label for="elecs" class="form-check-label">
+                            <input class="form-check-input" type="radio" id="elecs" data-ng-model="type" data-ng-value="'electricalseries'">
+                            Electrical Series
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label for="others" class="form-check-label">
+                            <input class="form-check-input" type="radio" id="others" data-ng-model="type" data-ng-value="'others'">
+                            Others
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="desc" class="col-md-2 col-form-label">Product Description</label>
+                <div class="col-md-7">
+                    <textarea ng-model="desc" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
+                    <small id="addressHelp" class="form-text text-muted">Additional information to help customers better understand the product</small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Promotion Status*</label>
+
+                <div class="col-md-7">
+                    <!-- {{promo}} -->
+
+                    <div class="form-check">
+                        <label for="false" class="form-check-label">
+                            <input class="form-check-input" type="radio" id="false" data-ng-model="promo" data-ng-value="'false'" ng-checked="true">
+                            False
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label for="true" class="form-check-label">
+                            <input class="form-check-input" ng-init="promo='false'" type="radio" id="true" data-ng-model="promo" data-ng-value="'true'" >
+                            True
+                        </label>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="form-group row" ng-if="promo == 'true'">
+                <legend>
+                    Promotion Details
+                </legend>
+                <label for="pName" class="col-md-2 col-form-label">Discount Amount (%)*</label>
+                <div class="col-md-1">
+                    <input type="number" class="form-control" ng-model="discount" id="pName" placeholder="%">
+                </div>
+            </div>
+
+
+
+            <div class="form-group row">
+                <label for="" class="col-md-2 col-form-label custom-file">Product Image*</label>
+                <div class="col-md-3">
+                    <input type="file" id="file2" class="custom-file-input" ng-model="photo" onchange="angular.element(this).scope().file_changed(this)">
+                    <span class="custom-file-control"></span>
+
+                    <img id="photo" style="height:200px;width:auto;"/>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <labelclass="col-md-2 col-form-label"></label>
+                <div class="col-md-7">
+                    <button class="btn btn-primary" ng-click="upload()">Submit order</button>
+
+                </div>
+            </div>
+
+            <!-- <a href ng-click="upload()">aaa</a> -->
+
+            <!-- <input type="file" id="file2"> -->
+
+
+
+        </fieldset>
+    </form>
+
+
+</div>
+
+<script>
+    $("#file2").change(function(e) {
+
+        for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+            var file = e.originalEvent.srcElement.files[i];
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                 $("#photo").attr("src",reader.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+
+<div id="accordion" role="tablist">
+
+    <!-- <div data-ng-repeat="">
+
+    </div> -->
+
+    <!-- <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0">
+            <a data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse" href>
+            #1
+            </a>
+            </h5>
+        </div>
+
+        <div id="collapse" class="collapse show" role="tabpanel" data-parent="#accordion">
+            <div class="card-body">
+
+                <div class="row">
+
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+</div>
+
+
+
+<!-- <a href data-toggle="modal" data-target="#mmmodal">{{currentUser.name}}</a> -->
+<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#productModal">
+    Add new product
+</button>
+
+<div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title text-white">Add a new item</h4>
+            </div>
+
+            <div class="modal-body">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div> -->
