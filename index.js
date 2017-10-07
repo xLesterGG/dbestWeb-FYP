@@ -79,6 +79,7 @@ var socket = io.listen(server);
 var inquiries = {};
 var conversations = {};
 var users = {};
+var promo = {};
 
 var firebase = require('firebase');
 firebase.initializeApp(config);
@@ -120,6 +121,17 @@ socket.on("connection",(client)=>{
         var b = database.ref('/conversations');
         var c = database.ref('/conversations/'); // to receive incoming messages and update view
         var d = database.ref('/users');
+
+        var e = database.ref('/promo'); // for change
+
+        e.on('value',(res)=>{
+            for(var x in res.val()){
+                promo[x] = res.val()[x];
+                // console.log(res.val()[x]);
+            }
+            // console.log('getting value from promo')
+            socket.sockets.emit("updatePromoList",promo);
+        });
 
         d.on('value',(res)=>{
             for(var x in res.val()){

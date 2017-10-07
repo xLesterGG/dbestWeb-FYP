@@ -158,7 +158,7 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 });
 
-app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,$cookieStore)=>{
+app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,$cookieStore,promoService)=>{
 
     window.onfocus = ()=>{
         $scope.$apply();
@@ -431,6 +431,11 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
     });
 
+    socket.on("updatePromoList",(promoList)=>{
+        promoService.addPromo(promoList);
+        $scope.$apply();
+    });
+
     socket.on("updateUserList",(userList)=>{
         userService.addUsers(userList);
         $scope.$apply();
@@ -452,7 +457,26 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
 
-app.controller("addProductCtrl",($scope,$state)=>{
+
+
+app.controller("addProductCtrl",($scope,$state,promoService)=>{
+
+
+    // $scope.promo = promoService.getPromo();
+
+
+    $scope.$watch(function() {
+        return promoService.getPromo();
+    }, function() {
+        $scope.updatePromo();
+    });
+
+    $scope.updatePromo = ()=>{
+        $scope.promo = promoService.getPromo();
+        console.log($scope.promo);
+    };
+
+
     $scope.selected = false;
     // console.log(firebase.apps.length);
     var defaultStorage ;
@@ -461,20 +485,12 @@ app.controller("addProductCtrl",($scope,$state)=>{
         if(!firebase.apps.length) {
            window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
         } else {
-          /* do something*/
-        //   console.log('true');
+
           defaultStorage  = firebase.storage().ref();
         }
     }
     checkFlag();
 
-    // if(!firebase.apps.length){
-    //     $state.go('home.inbox');
-    //     $state.go('home.addproduct');
-    // }
-    // else{
-    //     defaultStorage  = firebase.storage().ref();
-    // }
 
     socket.on("productSuccess",()=>{
         alert('Product added successfully');
@@ -848,21 +864,6 @@ $urlRouterProvider.otherwise('home/inbox');
         abstract: true,
         templateUrl: "templates/home.html"
     })
-    // .state('home.admin',{
-    //   url:"/admin",
-    //   templateUrl: "templates/admin.html"
-    // })
-    //
-    // .state('admin.create',{
-    //   url:"/admin/create",
-    //   templateUrl: "templates/adminCreate.html"
-    // })
-    //
-    // .state('admin.info',{
-    //   url:"/admin/info",
-    //   templateUrl: "templates/info.html"
-    // })
-    //
     .state('home.history',{
       url: '/history',
       templateUrl: "templates/history.html"
@@ -887,11 +888,11 @@ $urlRouterProvider.otherwise('home/inbox');
         url:'/addproduct',
         templateUrl: "templates/addproduct.html"
     })
-    // .state('/', {
-    //     url: '/',
-    //     templateUrl: "templates/home.html"
-    //
-    // })
+    .state('home.productlist',{
+        url:'/productlist',
+        templateUrl: "templates/productlist.html"
+    })
+
     ;
 })
 
@@ -916,11 +917,30 @@ app.service('inqService', function() {
 
 });
 
+app.service('promoService', function() {
+    var promoList = [];
+
+    var addPromo = function(newObj) {
+        promoList = newObj;
+    };
+
+    var getPromo = function(){
+      return promoList;
+    };
+
+    return {
+        addPromo: addPromo,
+        getPromo: getPromo
+    };
+
+});
+
+
+
 app.service('userService', function() {
     var userList = [];
 
     var addUsers = function(newObj) {
-    //   inqList.push(newObj);
         userList = newObj;
     };
 
