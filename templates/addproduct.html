@@ -13,7 +13,8 @@
             <div class="form-group row">
                 <label for="pName" class="col-md-2 col-form-label">Product Name*</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" id="pName" placeholder="Product Name">
+                    <input type="text" ng-model="pName" class="form-control" id="pName" placeholder="Product Name">
+                    <small class="form-text text-muted">The product name helps customers identify what you are selling</small>
                 </div>
             </div>
 
@@ -71,7 +72,7 @@
                 <label for="desc" class="col-md-2 col-form-label">Product Description</label>
                 <div class="col-md-7">
                     <textarea ng-model="desc" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
-                    <small id="addressHelp" class="form-text text-muted">Additional information to help customers better understand the product</small>
+                    <small class="form-text text-muted">Additional information to help customers better understand the product</small>
                 </div>
             </div>
 
@@ -99,9 +100,9 @@
             </div>
 
             <div class="form-group row" ng-if="promo == 'true'">
-                <legend>
+                <!-- <legend>
                     Promotion Details
-                </legend>
+                </legend> -->
                 <label for="pName" class="col-md-2 col-form-label">Discount Amount (%)*</label>
                 <div class="col-md-1">
                     <input type="number" class="form-control" ng-model="discount" id="pName" placeholder="%">
@@ -115,16 +116,21 @@
                 <div class="col-md-3">
                     <input type="file" id="file2" class="custom-file-input" ng-model="photo" onchange="angular.element(this).scope().file_changed(this)">
                     <span class="custom-file-control"></span>
+                    <div ng-show="selected==true">
+                        <img id="photo" style="height:150px;width:auto;"/>
+                    </div>
 
-                    <img id="photo" style="height:200px;width:auto;"/>
 
                 </div>
             </div>
 
-            <div class="form-group row">
-                <labelclass="col-md-2 col-form-label"></label>
-                <div class="col-md-7">
-                    <button class="btn btn-primary" ng-click="upload()">Submit order</button>
+
+
+            <div class="form-group row" ng-show="selected==true">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-5">
+                    <button class="btn btn-primary" ng-click="upload()">Add product</button>
 
                 </div>
             </div>

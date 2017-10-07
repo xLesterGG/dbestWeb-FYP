@@ -493,6 +493,13 @@ socket.on("connection",(client)=>{
 
     });
 
+    client.on("addProduct",(product)=>{
+        var a = database.ref('/promo/').push(product)
+        .then(()=>{
+            client.emit("productSuccess");
+        });
+    });
+
     client.on("toTrash",(inq)=>{
         if(inq.quotations!=undefined){
             var data = {

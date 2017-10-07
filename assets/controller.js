@@ -174,7 +174,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
     socket.on("getConfig",(c)=>{
-        console.log('getting on chat');
+        // console.log('getting on chat');
         config = c;
         fbApp = firebase.initializeApp(config);
         defaultStorage  = fbApp.storage().ref();
@@ -453,50 +453,40 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
 app.controller("addProductCtrl",($scope,$state)=>{
-    var selected = false;
+    $scope.selected = false;
     // console.log(firebase.apps.length);
-
-    var config = {};
-    var fbApp;
     var defaultStorage ;
 
-    // if(firebase.apps.length === 0)
-    // {
-    //     socket.emit("getConfig");
-    //
-    // }else{
+    function checkFlag() {
+        if(!firebase.apps.length) {
+           window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
+        } else {
+          /* do something*/
+        //   console.log('true');
+          defaultStorage  = firebase.storage().ref();
+        }
+    }
+    checkFlag();
+
+    // if(!firebase.apps.length){
+    //     $state.go('home.inbox');
+    //     $state.go('home.addproduct');
+    // }
+    // else{
     //     defaultStorage  = firebase.storage().ref();
     // }
-    //
-    // socket.on("getConfig",(c)=>{
-    //     console.log('getting on product');
-    //
-    //     config = c;
-    //     fbApp = firebase.initializeApp(config);
-    //     defaultStorage  = fbApp.storage().ref();
-    // });
-    // if(!firebase.apps.length){
-    //     socket.emit("getConfig");
-    // }
 
-    // for(var i = 0; i <10 ; i --){
-    //     if(firebase.apps.length){
-    //         break;
-    //     }
-    // }
+    socket.on("productSuccess",()=>{
+        alert('Product added successfully');
 
-    if(!firebase.apps.length){
-        $state.go('home.inbox');
-    }
-    else{
-        defaultStorage  = firebase.storage().ref();
-    }
+        location.reload();
 
+    });
 
     $scope.file_changed = (element)=> {
         $scope.$apply((scope)=> {
             console.log($scope.type);
-            selected = true;
+            $scope.selected = true;
             var fileReader = new FileReader();
             fileReader.onload = ()=>{
                 $scope.loadedFile = fileReader.result;
@@ -508,8 +498,13 @@ app.controller("addProductCtrl",($scope,$state)=>{
             var files = element.files;
 
             $scope.upload = ()=>{
-                console.log("trying to upload");
-                if(selected){
+                // console.log("trying to upload");
+                if($scope.pName=='' || !$scope.pName){
+                    alert('Product Name cannot be empty');
+                    return ;
+                }
+
+                if($scope.selected){
                     var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+element.files[0].name);
 
                     var uploadTask = imgRef.put(element.files[0]);
@@ -529,7 +524,7 @@ app.controller("addProductCtrl",($scope,$state)=>{
                     });
                 }
                 else{
-                    // console.log("no picture");
+                    alert('Please pick a photo');
                 }
 
             }
@@ -539,22 +534,20 @@ app.controller("addProductCtrl",($scope,$state)=>{
 
     $scope.submitForm = (url)=>{
         var product = {};
-        product.productName = $scope.;
+        product.productName = $scope.pName;
         product.productType = $scope.type;
-        product.description = $scope.;
-        product.promotion = $scope.;
+        product.description = $scope.desc;
+        product.promotion = $scope.promo;
 
         if(product.promotion){
-            product.discountPercent = $scope.disco;
+            product.discountPercent = $scope.discount;
         }
         else{
             product.discountPercent = 0;
         }
 
         product.imageFileUrl = url;
-
         socket.emit("addProduct",product);
-
     };
 
 });
