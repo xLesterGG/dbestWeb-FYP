@@ -457,14 +457,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
 
-
-
-app.controller("addProductCtrl",($scope,$state,promoService)=>{
-
-
-    // $scope.promo = promoService.getPromo();
-
-
+app.controller("listProductCtrl",($scope,promoService)=>{
     $scope.$watch(function() {
         return promoService.getPromo();
     }, function() {
@@ -475,6 +468,13 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
         $scope.promo = promoService.getPromo();
         console.log($scope.promo);
     };
+
+});
+
+app.controller("addProductCtrl",($scope,$state,promoService)=>{
+
+
+    // $scope.promo = promoService.getPromo();
 
 
     $scope.selected = false;
