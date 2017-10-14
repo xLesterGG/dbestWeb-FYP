@@ -11,10 +11,6 @@
         <div data-ng-repeat="p in promo track by $index">
             <div class="row" ng-if="p.promotion=='true'">
 
-
-
-
-
                 <div class="col-md-8">
 
                     <div id="productModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -22,10 +18,29 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header bg-primary">
-                                    <h4 class="modal-title text-white">Add a new item</h4>
+                                    <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
                                 </div>
 
                                 <div class="modal-body">
+                                    <fieldset>
+                                        <legend>
+                                            Product Information
+                                        </legend>
+
+                                        <div class="form-group row">
+                                            <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="pName" class="form-control" id="pName" placeholder="Product Name" >
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                    </fieldset>
+
 
                                 </div>
 
@@ -48,64 +63,6 @@
                         </div>
 
                         <div ng-if="$index != 0" id="collapse{{$index}}" class="collapse" role="tabpanel" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:auto;height:300px"/>
-                                    </div>
-
-                                    <div class="col-md">
-
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <h3>p.productName</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:20px">
-                                            <div class="col-md-3">
-                                                <h6>Description</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.description}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-3">
-                                                <h6>Product Category</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.productType}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <h6>Promotion</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.promotion}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" ng-if="p.promotion==true">
-                                            <div class="col-md-3">
-                                                <h6>Discount Percent</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.discountPercent}}
-                                            </div>
-                                        </div>
-
-                                        <button type="button" data-toggle="modal" data-target="#productModal{{$index}}" style="margin-top:17%" class="btn btn-outline-primary">Edit this item </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="$index == 0" id="collapse{{$index}}" class="collapse show" role="tabpanel" data-parent="#accordion">
                             <div class="card-body">
 
                                 <div class="row">
@@ -157,7 +114,65 @@
                                             </div>
                                         </div>
 
-                                        <button type="button" style="margin-top:17%" class="btn btn-outline-primary">Edit this item </button>
+                                        <button type="button" data-toggle="modal" data-target="#productModal{{$index}}" style="margin-top:17%" class="btn btn-outline-primary">Edit this item </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="$index == 0" id="collapse{{$index}}" class="collapse show" role="tabpanel" data-parent="#accordion">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="{{p.imageFileUrl}}" style="width:auto;height:250px"/>
+                                    </div>
+
+                                    <div class="col-md">
+
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <h3>{{p.productName}}</h3>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top:20px">
+                                            <div class="col-md-3">
+                                                <h6>Description</h6>
+                                            </div>
+                                            <div class="col-md">
+                                                {{p.description}}
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top:10px">
+                                            <div class="col-md-3">
+                                                <h6>Product Category</h6>
+                                            </div>
+                                            <div class="col-md">
+                                                {{p.productType}}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h6>Promotion</h6>
+                                            </div>
+                                            <div class="col-md">
+                                                {{p.promotion}}
+                                            </div>
+                                        </div>
+
+                                        <div class="row" ng-if="p.promotion==true">
+                                            <div class="col-md-3">
+                                                <h6>Discount Percent</h6>
+                                            </div>
+                                            <div class="col-md">
+                                                {{p.discountPercent}}
+                                            </div>
+                                        </div>
+
+                                        <button type="button" style="margin-top:10%" data-toggle="modal" data-target="#productModal{{$index}}" class="btn btn-outline-primary">Edit this item </button>
 
                                     </div>
                                 </div>
