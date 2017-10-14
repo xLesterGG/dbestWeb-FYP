@@ -8,51 +8,154 @@
     <br />
 
     <div id="accordion" role="tablist">
-        <div data-ng-repeat="p in promo track by $index">
-            <div class="row" ng-if="p.promotion=='true'">
+        <div data-ng-repeat="(k,p) in promo track by $index">
+            {{k}}
+            <div id="productModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
-                <div class="col-md-8">
 
-                    <div id="productModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
+                        </div>
 
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary">
-                                    <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
+                        <div class="modal-body">
+                            <fieldset>
+                                <legend>
+                                    Product Information
+                                </legend>
+                                {{p.productName}}
+
+                                <div class="form-group row">
+                                    <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
+                                    <div class="col-md-7">
+                                        <input type="text" ng-model="pName[$index]" ng-init="pName[$index] =p.productName"
+                                        ng-value="p.productName" class="form-control" id="pName" placeholder="Product Name" >
+                                    </div>
                                 </div>
 
-                                <div class="modal-body">
-                                    <fieldset>
-                                        <legend>
-                                            Product Information
-                                        </legend>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Product type*</label>
+                                    <!-- {{p.productType}} -->
 
-                                        <div class="form-group row">
-                                            <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
-                                            <div class="col-md-7">
-                                                <input type="text" ng-model="pName" class="form-control" id="pName" placeholder="Product Name" >
-                                            </div>
+                                    <div class="col-md-7" ng-init="type[$index]=p.productType" >
+                                        <div class="form-check">
+                                            <label for="paint" class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="paint" data-ng-model="type[$index]" data-ng-value="'paint'">
+                                                Paint
+                                            </label>
                                         </div>
 
 
 
+                                        <div class="form-check">
+                                            <label  for="powert" class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="powert" data-ng-model="type[$index]" data-ng-value="'powertool'" >
+                                                Power Tool
+                                            </label>
+                                        </div>
 
+                                        <div class="form-check">
+                                            <label  for="handt"  class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="handt" data-ng-model="type[$index]" data-ng-value="'handtool'">
+                                                Hand tool
+                                            </label>
+                                        </div>
 
+                                        <div class="form-check">
+                                            <label for="waters"  class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="waters" data-ng-model="type[$index]" data-ng-value="'waterseries'">
+                                                Water Series
+                                            </label>
+                                        </div>
 
-                                    </fieldset>
+                                        <div class="form-check">
+                                            <label for="elecs" class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="elecs" data-ng-model="type[$index]" data-ng-value="'electricalseries'">
+                                                Electrical Series
+                                            </label>
+                                        </div>
 
+                                        <div class="form-check">
+                                            <label for="others" class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="others" data-ng-model="type[$index]" data-ng-value="'others'">
+                                                Others
+                                            </label>
+                                        </div>
 
+                                        <!-- INDEX IS {{$index}} -----------
+                                        {{type[$index]}} -->
+
+                                    </div>
                                 </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <div class="form-group row">
+                                    <label for="desc" class="col-md-3 col-form-label">Product Description</label>
+                                    <div class="col-md-7">
+                                        <textarea ng-model="desc[$index]" ng-init="desc[$index]= p.description" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Promotion Status*</label>
+
+                                    <div class="col-md-7" >
+
+                                        <div class="form-check">
+                                            <label for="false" class="form-check-label">
+                                                <input class="form-check-input" ng-init="promo123[$index]=p.promotion" type="radio" id="false" data-ng-model="promo123[$index]" data-ng-value="'false'">
+                                                False
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <label for="true" class="form-check-label">
+                                                <input class="form-check-input" type="radio" id="true" data-ng-model="promo123[$index]" data-ng-value="'true'" >
+                                                True
+                                            </label>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" ng-if="promo123[$index] == 'true'">
+
+                                    <label class="col-md-3 col-form-label">Discount Amount (%)*</label>
+                                    <div class="col-md-2">
+                                        <input type="number" ng-init="discount[$index]= p.discountPercent" class="form-control" ng-model="discount[$index]" placeholder="%">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <button class="btn btn-primary" ng-click="update(k,pName[$index],type[$index],desc[$index],promo123[$index],discount[$index],p.imageFileUrl)">Update product</button>
+
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+
 
                         </div>
 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
 
+                </div>
+
+            </div>
+
+
+            <div class="row" ng-if="p.promotion=='true'">
+
+                <div class="col-md-8">
                     <div class="card">
                         <div class="card-header bg-primary" role="tab" id="headingOne">
                             <h5 class="mb-0">
@@ -62,12 +165,12 @@
                             </h5>
                         </div>
 
-                        <div ng-if="$index != 0" id="collapse{{$index}}" class="collapse" role="tabpanel" data-parent="#accordion">
+                        <div ng-if="$index != 0" id="collapse{{$index}}" class="show" role="tabpanel" data-parent="#accordion">
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:auto;height:300px"/>
+                                        <img src="{{p.imageFileUrl}}" style="width:200px;height:auto"/>
                                     </div>
 
                                     <div class="col-md">

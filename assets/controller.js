@@ -466,8 +466,24 @@ app.controller("listProductCtrl",($scope,promoService)=>{
 
     $scope.updatePromo = ()=>{
         $scope.promo = promoService.getPromo();
+
         console.log($scope.promo);
     };
+
+    $scope.update = (key,productName,type,desc,promotion,discountAmount,img)=>{
+        var data = {};
+        data.productName = productName;
+        data.productType = type;
+        data.description = desc;
+        data.promotion = promotion;
+        data.discountPercent = discountAmount;
+        data.imageFileUrl = img;
+
+        socket.emit("updateProduct",key,product);
+    };
+
+
+
 
 });
 
@@ -475,7 +491,9 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
 
 
     // $scope.promo = promoService.getPromo();
-
+    $scope.dothis = ()=>{
+        console.log($scope.discount);
+    };
 
     $scope.selected = false;
     // console.log(firebase.apps.length);
@@ -561,7 +579,7 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
         else{
             product.discountPercent = 0;
         }
-
+        console.log(product)
         product.imageFileUrl = url;
         socket.emit("addProduct",product);
     };
