@@ -505,6 +505,14 @@ socket.on("connection",(client)=>{
 
     });
 
+    client.on("updateProduct",(key,product)=>{
+        var update = {};
+        update['/promo/'+key] = product;
+        database.ref().update(update).then(()=>{
+            client.emit("updateProductSuccess");
+        });
+    });
+
     client.on("addProduct",(product)=>{
         var a = database.ref('/promo/').push(product)
         .then(()=>{

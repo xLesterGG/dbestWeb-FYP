@@ -475,12 +475,28 @@ app.controller("listProductCtrl",($scope,promoService)=>{
         data.productName = productName;
         data.productType = type;
         data.description = desc;
-        data.promotion = promotion;
-        data.discountPercent = discountAmount;
+        data.listing = promotion;
+
+        // if(promotion=='true')
+        // {
+        //     console.log('true');
+            data.discountPercent = discountAmount;
+
+        // }else{
+        //     data.discountPercent = 0;
+        // }
         data.imageFileUrl = img;
 
-        socket.emit("updateProduct",key,product);
+        // console.log(discountAmount);
+
+        socket.emit("updateProduct",key,data);
     };
+
+    socket.on("updateProductSuccess",()=>{
+        alert('Product updated successfully');
+        location.reload();
+
+    });
 
 
 
@@ -571,17 +587,17 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
         product.productName = $scope.pName;
         product.productType = $scope.type;
         product.description = $scope.desc;
-        product.promotion = $scope.promo;
+        product.listing = $scope.listing;
 
-        if(product.promotion){
+        // if(product.promotion){
             product.discountPercent = $scope.discount;
-        }
-        else{
-            product.discountPercent = 0;
-        }
+        // }
+        // else{
+        //     product.discountPercent = 0;
+        // }
         console.log(product)
-        product.imageFileUrl = url;
-        socket.emit("addProduct",product);
+            product.imageFileUrl = url;
+            socket.emit("addProduct",product);
     };
 
 });
