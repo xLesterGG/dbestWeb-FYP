@@ -464,10 +464,36 @@ app.controller("listProductCtrl",($scope,promoService)=>{
         $scope.updatePromo();
     });
 
+    $scope.listedNo = 0;
+    $scope.unListedNo = 0;
     $scope.updatePromo = ()=>{
         $scope.promo = promoService.getPromo();
 
-        console.log($scope.promo);
+
+        // console.log($scope.promo);
+        var x = 0;
+        var y = 0;
+        if($scope.promo)
+        {
+            angular.forEach($scope.promo, function(item){
+                if(item.listing == "true")
+                {
+                    x++;
+                }else{
+                    y++;
+                }
+            });
+
+            $scope.listedNo = x;
+            $scope.unlistedNo = y;
+        }
+
+        // for(var i = 0 ; i < $scope.promo.length; i ++){
+        //     // if($scope.promo[i])
+        //     console.log($scope.promo[i]);
+        // }
+
+        // console.log($scope.promo);
     };
 
     $scope.update = (key,productName,type,desc,promotion,discountAmount,img)=>{
@@ -477,18 +503,13 @@ app.controller("listProductCtrl",($scope,promoService)=>{
         data.description = desc;
         data.listing = promotion;
 
-        // if(promotion=='true')
-        // {
-        //     console.log('true');
-            data.discountPercent = discountAmount;
 
-        // }else{
-        //     data.discountPercent = 0;
-        // }
+        data.discountPercent = discountAmount;
+
         data.imageFileUrl = img;
 
         // console.log(discountAmount);
-
+        console.log(key);
         socket.emit("updateProduct",key,data);
     };
 
@@ -850,6 +871,33 @@ app.filter('reverse', function() {
           return items.slice().reverse();
       }
   };
+});
+
+
+app.filter('listed', function() {
+    return function(items) {
+        var a = {};
+        for(var x in items){
+            if(items[x].listing == "true"){
+                a[x] = items[x];
+            }
+        }
+
+        return a;
+    };
+});
+
+app.filter('unlisted', function() {
+    return function(items) {
+        var a = {};
+        for(var x in items){
+            if(items[x].listing == "false"){
+                a[x] = items[x];
+            }
+        }
+
+        return a;
+    };
 });
 
 app.filter('inqFilter', function(){
