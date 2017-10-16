@@ -122,7 +122,7 @@ socket.on("connection",(client)=>{
         var c = database.ref('/conversations/'); // to receive incoming messages and update view
         var d = database.ref('/users');
 
-        var e = database.ref('/promo'); // for change
+        var e = database.ref('/product'); // for change
 
         e.on('value',(res)=>{
             for(var x in res.val()){
@@ -507,14 +507,14 @@ socket.on("connection",(client)=>{
 
     client.on("updateProduct",(key,product)=>{
         var update = {};
-        update['/promo/'+key] = product;
+        update['/product/'+key] = product;
         database.ref().update(update).then(()=>{
             client.emit("updateProductSuccess");
         });
     });
 
     client.on("addProduct",(product)=>{
-        var a = database.ref('/promo/').push(product)
+        var a = database.ref('/product/').push(product)
         .then(()=>{
             client.emit("productSuccess");
         });

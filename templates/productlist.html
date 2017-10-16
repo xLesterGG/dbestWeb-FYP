@@ -124,7 +124,6 @@
                                     </div>
                                 </div>
 
-                                {{k}}
                                 <div class="form-group row">
                                     <div class="col-md-3">
                                     </div>
@@ -166,7 +165,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:200px;height:auto"/>
+                                        <img src="{{p.imageFileUrl}}" class="image"  ng-click="view()" style="width:200px;height:auto"/>
                                     </div>
 
                                     <div class="col-md">
@@ -209,7 +208,7 @@
                                                 <h6>Discount Percent</h6>
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}
+                                                {{p.discountPercent}}%
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent=='0'">
                                                 None
@@ -227,7 +226,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:200px;height:auto"/>
+                                        <img src="{{p.imageFileUrl}}" class="image" ng-click="view()" style="width:200px;height:auto"/>
                                     </div>
 
                                     <div class="col-md">
@@ -270,7 +269,7 @@
                                                 <h6>Discount Percent</h6>
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}
+                                                {{p.discountPercent}}%
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent=='0'">
                                                 None
@@ -457,7 +456,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:200px;height:auto"/>
+                                        <img src="{{p.imageFileUrl}}" class="image"  ng-click="view()" style="width:200px;height:auto"/>
                                     </div>
 
                                     <div class="col-md">
@@ -500,14 +499,14 @@
                                                 <h6>Discount Percent</h6>
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}
+                                                {{p.discountPercent}}%
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent=='0'">
                                                 None
                                             </div>
                                         </div>
 
-                                        <button type="button" data-toggle="modal" data-target="#productModal{{$index}}" style="margin-top:10px" class="btn btn-outline-primary">Edit this item </button>
+                                        <button type="button" data-toggle="modal" data-target="#productModal1{{$index}}" style="margin-top:10px" class="btn btn-outline-primary">Edit this item </button>
                                     </div>
                                 </div>
                             </div>
@@ -518,7 +517,7 @@
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="{{p.imageFileUrl}}" style="width:200px;height:auto"/>
+                                        <img src="{{p.imageFileUrl}}" class="image"  ng-click="view()" style="width:200px;height:auto"/>
                                     </div>
 
                                     <div class="col-md">
@@ -561,7 +560,7 @@
                                                 <h6>Discount Percent</h6>
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}
+                                                {{p.discountPercent}}%
                                             </div>
                                             <div class="col-md" ng-if="p.discountPercent=='0'">
                                                 None

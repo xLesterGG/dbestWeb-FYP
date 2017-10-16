@@ -458,6 +458,10 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
 
 app.controller("listProductCtrl",($scope,promoService)=>{
+    $scope.view = ()=>{
+        $('.image').viewer();
+    };
+
     $scope.$watch(function() {
         return promoService.getPromo();
     }, function() {
@@ -505,6 +509,8 @@ app.controller("listProductCtrl",($scope,promoService)=>{
 
 
         data.discountPercent = discountAmount;
+        data.latestUpdated = parseInt('-'+parseInt(new Date().getTime()));
+        data.latestUpdated1 = parseInt(new Date().getTime());
 
         data.imageFileUrl = img;
 
@@ -611,7 +617,12 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
         product.listing = $scope.listing;
 
         // if(product.promotion){
-            product.discountPercent = $scope.discount;
+        product.discountPercent = $scope.discount;
+        // parseInt('-'+parseInt(new Date().getTime()));
+        // parseInt(new Date().getTime());
+
+        product.latestUpdated = parseInt('-'+parseInt(new Date().getTime()));
+        product.latestUpdated1 = parseInt(new Date().getTime());
         // }
         // else{
         //     product.discountPercent = 0;
