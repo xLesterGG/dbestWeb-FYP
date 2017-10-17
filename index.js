@@ -431,6 +431,7 @@ socket.on("connection",(client)=>{
                             lastMessage: msg1,
                             msgUnreadCountForMobile: unread,
                             items : inq.items,
+                            userStatus:inq.userStatus,
                             quotations:JSON.parse(JSON.stringify(inq.quotations)),
                             inquiryTime: inq.inquiryTime
                         }
@@ -468,6 +469,7 @@ socket.on("connection",(client)=>{
                             lastMessage: msg,
                             msgUnreadCountForMobile: unread,
                             items : inq.items,
+                            userStatus:inq.userStatus,
                             inquiryTime: inq.inquiryTime,
                             status: inq.status
                         }
@@ -480,6 +482,7 @@ socket.on("connection",(client)=>{
                             lastMessage: msg1,
                             msgUnreadCountForMobile: unread,
                             items : inq.items,
+                            userStatus:inq.userStatus,
                             inquiryTime: inq.inquiryTime
                         }
 
@@ -533,7 +536,7 @@ socket.on("connection",(client)=>{
 
     client.on("toInbox",(inq)=>{
         var data = inq;
-        data.status="none";        
+        data.status="none";
 
         var update = {};
         update['/inquiries/'+ inq.inquiryID] = data;
