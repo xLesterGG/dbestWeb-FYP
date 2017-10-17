@@ -317,16 +317,22 @@ socket.on("connection",(client)=>{
             var data1= JSON.parse(JSON.stringify(data));
             data1.lastMessage = msg1;
 
+
+            if(data1.quotations){
+                for(var i = 0; i < data1.quotations.length;i++){
+                    data1.quotations[i].time = parseInt('-'+data1.quotations[i].time);
+                }
+            }
+
             var update = {};
             var update1 = {};
+
 
             update['/inquiries/'+ inq.inquiryID] = data;
             database.ref().update(update);
 
             update1['/adinquiries/'+ inq.inquiryOwner+'/'+ inq.inquiryID] =data1;
             database.ref().update(update1);
-
-
 
         }
 
@@ -412,19 +418,6 @@ socket.on("connection",(client)=>{
 
                     if(inq.quotations!=undefined)
                     {
-                        // var data = {
-                        //     inquiryPeoples: inq.inquiryPeoples,
-                        //     inquiryName:inq.inquiryName,
-                        //     inquiryID:inq.inquiryID,
-                        //     inquiryOwner: inq.inquiryOwner,
-                        //     bearings : inq.bearings,
-                        //     quotations:inq.quotations,
-                        //     inquiryTime: inq.inquiryTime,
-                        //     status: inq.status,
-                        //     lastMessage: msg,
-                        //     msgUnreadCountForMobile: unread
-                        // }
-
                         var data = inq;
                         data.lastMessage = msg;
                         data.msgUnreadCountForMobile = unread;
@@ -438,8 +431,15 @@ socket.on("connection",(client)=>{
                             lastMessage: msg1,
                             msgUnreadCountForMobile: unread,
                             items : inq.items,
-                            quotations:inq.quotations,
+                            quotations:JSON.parse(JSON.stringify(inq.quotations)),
                             inquiryTime: inq.inquiryTime
+                        }
+
+                        if(data1.quotations){
+                            for(var i = 0; i < data1.quotations.length;i++){
+                                data1.quotations[i].time = parseInt('-'+parseInt(data1.quotations[i].time));
+                                // console.log(data1.quotations[i].time);
+                            }
                         }
 
 
@@ -451,7 +451,7 @@ socket.on("connection",(client)=>{
 
                         update['/inquiries/'+ inq.inquiryID] = data;
                         database.ref().update(update);
-
+                        //
                         update1['/adinquiries/'+ inqOwner+'/'+ inq.inquiryID] =data1;
                         database.ref().update(update1);
 
@@ -522,34 +522,36 @@ socket.on("connection",(client)=>{
     });
 
     client.on("toTrash",(inq)=>{
-        if(inq.quotations!=undefined){
-            var data = {
-                inquiryPeoples: inq.inquiryPeoples,
-                inquiryName:inq.inquiryName,
-                inquiryID:inq.inquiryID,
-                inquiryOwner: inq.inquiryOwner,
-                lastMessage: inq.lastMessage,
-                items:inq.items,
-                quotations:inq.quotations,
-                inquiryTime: inq.inquiryTime,
-                status: "trash"
-            }
-
-
-        }
-        else{
-            var data = {
-                inquiryPeoples: inq.inquiryPeoples,
-                inquiryName:inq.inquiryName,
-                inquiryID:inq.inquiryID,
-                inquiryOwner: inq.inquiryOwner,
-                lastMessage: inq.lastMessage,
-                items:inq.items,
-                inquiryTime: inq.inquiryTime,
-                status:"trash"
-
-            }
-        }
+        var data = inq;
+        data.status="trash";
+        // if(inq.quotations!=undefined){
+        //     var data = {
+        //         inquiryPeoples: inq.inquiryPeoples,
+        //         inquiryName:inq.inquiryName,
+        //         inquiryID:inq.inquiryID,
+        //         inquiryOwner: inq.inquiryOwner,
+        //         lastMessage: inq.lastMessage,
+        //         items:inq.items,
+        //         quotations:inq.quotations,
+        //         inquiryTime: inq.inquiryTime,
+        //         status: "trash"
+        //     }
+        //
+        //
+        // }
+        // else{
+        //     var data = {
+        //         inquiryPeoples: inq.inquiryPeoples,
+        //         inquiryName:inq.inquiryName,
+        //         inquiryID:inq.inquiryID,
+        //         inquiryOwner: inq.inquiryOwner,
+        //         lastMessage: inq.lastMessage,
+        //         items:inq.items,
+        //         inquiryTime: inq.inquiryTime,
+        //         status:"trash"
+        //
+        //     }
+        // }
 
         var update = {};
         update['/inquiries/'+ inq.inquiryID] = data;
@@ -557,34 +559,37 @@ socket.on("connection",(client)=>{
     });
 
     client.on("toInbox",(inq)=>{
-        if(inq.quotations!=undefined){
-            var data = {
-                inquiryPeoples: inq.inquiryPeoples,
-                inquiryName:inq.inquiryName,
-                inquiryID:inq.inquiryID,
-                inquiryOwner: inq.inquiryOwner,
-                lastMessage: inq.lastMessage,
-                items:inq.items,
-                quotations:inq.quotations,
-                inquiryTime: inq.inquiryTime,
-                status: "none"
-            }
+        var data = inq;
+        data.status="none";
 
-
-        }
-        else{
-            var data = {
-                inquiryPeoples: inq.inquiryPeoples,
-                inquiryName:inq.inquiryName,
-                inquiryID:inq.inquiryID,
-                inquiryOwner: inq.inquiryOwner,
-                lastMessage: inq.lastMessage,
-                items:inq.items,
-                inquiryTime: inq.inquiryTime,
-                status:"none"
-
-            }
-        }
+        // if(inq.quotations!=undefined){
+        //     var data = {
+        //         inquiryPeoples: inq.inquiryPeoples,
+        //         inquiryName:inq.inquiryName,
+        //         inquiryID:inq.inquiryID,
+        //         inquiryOwner: inq.inquiryOwner,
+        //         lastMessage: inq.lastMessage,
+        //         items:inq.items,
+        //         quotations:inq.quotations,
+        //         inquiryTime: inq.inquiryTime,
+        //         status: "none"
+        //     }
+        //
+        //
+        // }
+        // else{
+        //     var data = {
+        //         inquiryPeoples: inq.inquiryPeoples,
+        //         inquiryName:inq.inquiryName,
+        //         inquiryID:inq.inquiryID,
+        //         inquiryOwner: inq.inquiryOwner,
+        //         lastMessage: inq.lastMessage,
+        //         items:inq.items,
+        //         inquiryTime: inq.inquiryTime,
+        //         status:"none"
+        //
+        //     }
+        // }
 
         var update = {};
         update['/inquiries/'+ inq.inquiryID] = data;
@@ -607,6 +612,12 @@ socket.on("connection",(client)=>{
             var data1 = JSON.parse(JSON.stringify(inq))
             data1.lastMessage = JSON.parse(JSON.stringify(msg));
             data1.lastMessage.messageTime = parseInt('-'+data1.lastMessage.messageTime);
+
+            if(data1.quotations){
+                for(var i = 0; i < data1.quotations.length;i++){
+                    data1.quotations[i].time = parseInt('-'+data1.quotations[i].time);
+                }
+            }
 
 
             var update = {};
@@ -645,6 +656,13 @@ socket.on("connection",(client)=>{
             var data1 = JSON.parse(JSON.stringify(inq))
             data1.lastMessage = JSON.parse(JSON.stringify(msg));
             data1.lastMessage.messageTime = parseInt('-'+data1.lastMessage.messageTime);
+
+            if(data1.quotations){
+                for(var i = 0; i < data1.quotations.length;i++){
+                    data1.quotations[i].time = parseInt('-'+data1.quotations[i].time);
+                    // console.log(data1.quotations[i].time);
+                }
+            }
 
 
             var update = {};
@@ -774,7 +792,11 @@ socket.on("connection",(client)=>{
         var update1 = {};
 
         var data1 = JSON.parse(JSON.stringify(data));
-        data1.time = parseInt('-'+parseInt(new Date().getTime()));
+        // data1.time = parseInt('-'+parseInt(new Date().getTime()));
+        for(var i = 0; i < data1.quotations.length;i++){
+            data1.quotations[i].time = parseInt('-'+data1.quotations[i].time);
+            // console.log(data1.quotations[i].time);
+        }
 
 /**************************************************************************************/
         update['/inquiries/'+ inq.inquiryID] = data;
