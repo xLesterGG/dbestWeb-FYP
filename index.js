@@ -524,34 +524,7 @@ socket.on("connection",(client)=>{
     client.on("toTrash",(inq)=>{
         var data = inq;
         data.status="trash";
-        // if(inq.quotations!=undefined){
-        //     var data = {
-        //         inquiryPeoples: inq.inquiryPeoples,
-        //         inquiryName:inq.inquiryName,
-        //         inquiryID:inq.inquiryID,
-        //         inquiryOwner: inq.inquiryOwner,
-        //         lastMessage: inq.lastMessage,
-        //         items:inq.items,
-        //         quotations:inq.quotations,
-        //         inquiryTime: inq.inquiryTime,
-        //         status: "trash"
-        //     }
-        //
-        //
-        // }
-        // else{
-        //     var data = {
-        //         inquiryPeoples: inq.inquiryPeoples,
-        //         inquiryName:inq.inquiryName,
-        //         inquiryID:inq.inquiryID,
-        //         inquiryOwner: inq.inquiryOwner,
-        //         lastMessage: inq.lastMessage,
-        //         items:inq.items,
-        //         inquiryTime: inq.inquiryTime,
-        //         status:"trash"
-        //
-        //     }
-        // }
+
 
         var update = {};
         update['/inquiries/'+ inq.inquiryID] = data;
@@ -560,36 +533,7 @@ socket.on("connection",(client)=>{
 
     client.on("toInbox",(inq)=>{
         var data = inq;
-        data.status="none";
-
-        // if(inq.quotations!=undefined){
-        //     var data = {
-        //         inquiryPeoples: inq.inquiryPeoples,
-        //         inquiryName:inq.inquiryName,
-        //         inquiryID:inq.inquiryID,
-        //         inquiryOwner: inq.inquiryOwner,
-        //         lastMessage: inq.lastMessage,
-        //         items:inq.items,
-        //         quotations:inq.quotations,
-        //         inquiryTime: inq.inquiryTime,
-        //         status: "none"
-        //     }
-        //
-        //
-        // }
-        // else{
-        //     var data = {
-        //         inquiryPeoples: inq.inquiryPeoples,
-        //         inquiryName:inq.inquiryName,
-        //         inquiryID:inq.inquiryID,
-        //         inquiryOwner: inq.inquiryOwner,
-        //         lastMessage: inq.lastMessage,
-        //         items:inq.items,
-        //         inquiryTime: inq.inquiryTime,
-        //         status:"none"
-        //
-        //     }
-        // }
+        data.status="none";        
 
         var update = {};
         update['/inquiries/'+ inq.inquiryID] = data;
