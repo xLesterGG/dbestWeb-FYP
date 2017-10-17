@@ -313,7 +313,7 @@ socket.on("connection",(client)=>{
 
             var msg1 = JSON.parse(JSON.stringify(message));
             msg1.messageTime = parseInt('-'+parseInt(new Date().getTime()));
-            
+
             var data1= JSON.parse(JSON.stringify(data));
             data1.lastMessage = msg1;
 
@@ -752,121 +752,40 @@ socket.on("connection",(client)=>{
 
     client.on("sendQuote",(b,inq)=>{
 
-        if(inq.lastMessage != undefined){
+        if(inq.quotations!=undefined){
+            var c= inq.quotations;
+            c.push(b);
 
-            // var data = {
-            //     inquiryPeoples: inq.inquiryPeoples,
-            //     inquiryName:inq.inquiryName,
-            //     inquiryID:inq.inquiryID,
-            //     inquiryOwner: inq.inquiryOwner,
-            //     lastMessage: inq.lastMessage,
-            //     bearings: inq.bearings,
-            //     quotes: b
-            // }
-
-            if(inq.quotations!=undefined){
-                var c= inq.quotations;
-                c.push(b);
-
-                var data = inq;
-                data.quotations = c;
-
-                // var data = {
-                //     inquiryPeoples: inq.inquiryPeoples,
-                //     inquiryName:inq.inquiryName,
-                //     inquiryID:inq.inquiryID,
-                //     inquiryOwner: inq.inquiryOwner,
-                //     lastMessage: inq.lastMessage,
-                //     bearings: inq.bearings,
-                //     quotations: c,
-                //     inquiryTime: inq.inquiryTime
-                // }
-
-
-            }
-            else{
-                var temp = [];
-                temp.push(b);
-
-                var data = inq;
-                data.quotations  = temp;
-
-                // var data = {
-                //     inquiryPeoples: inq.inquiryPeoples,
-                //     inquiryName:inq.inquiryName,
-                //     inquiryID:inq.inquiryID,
-                //     inquiryOwner: inq.inquiryOwner,
-                //     lastMessage: inq.lastMessage,
-                //     bearings: inq.bearings,
-                //     quotations: temp,
-                //     inquiryTime: inq.inquiryTime,
-                //     status:inq.status
-                // }
-
-                // console.log(data);
-
-            }
-
-
-
-            var update = {};
-            var update1 = {};
-
-/**************************************************************************************/
-            update['/inquiries/'+ inq.inquiryID] = data;
-            database.ref().update(update);
-
-            update1['/adinquiries/'+inq.inquiryOwner +'/'+inq.inquiryID] = data;
-            database.ref().update(update1);
-
-/**************************************************************************************/
+            var data = inq;
+            data.quotations = c;
         }
         else{
+            var temp = [];
+            temp.push(b);
 
-            if(inq.quotations!=undefined){
-                var c= inq.quotations;
-                c.push(b);
+            var data = inq;
+            data.quotations  = temp;
 
-                var data = {
-                    inquiryPeoples: inq.inquiryPeoples,
-                    inquiryName:inq.inquiryName,
-                    inquiryID:inq.inquiryID,
-                    inquiryOwner: inq.inquiryOwner,
-                    items: inq.items,
-                    quotations: c,
-                    inquiryTime: inq.inquiryTime,
-                    status:inq.status
-                }
-
-            }
-            else{
-                var temp = [];
-                temp.push(b);
-
-                var data = {
-                    inquiryPeoples: inq.inquiryPeoples,
-                    inquiryName:inq.inquiryName,
-                    inquiryID:inq.inquiryID,
-                    inquiryOwner: inq.inquiryOwner,
-                    items: inq.items,
-                    quotations: temp,
-                    inquiryTime: inq.inquiryTime,
-                    status:inq.status
-                }
-            }
-
-
-            var update = {};
-            var update1 = {};
-
-/**************************************************************************************/
-            update['/inquiries/'+ inq.inquiryID] = data;
-            database.ref().update(update);
-
-            update1['/adinquiries/'+inq.inquiryOwner +'/'+inq.inquiryID] = data;
-            database.ref().update(update1);
-/**************************************************************************************/
         }
+
+
+
+        var update = {};
+        var update1 = {};
+
+        var data1 = JSON.parse(JSON.stringify(data));
+        data1.time = parseInt('-'+parseInt(new Date().getTime()));
+
+/**************************************************************************************/
+        update['/inquiries/'+ inq.inquiryID] = data;
+        database.ref().update(update);
+
+        update1['/adinquiries/'+inq.inquiryOwner +'/'+inq.inquiryID] = data1;
+        database.ref().update(update1);
+
+/**************************************************************************************/
+
+
 
 
     });
