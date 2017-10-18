@@ -472,6 +472,7 @@ app.controller("listProductCtrl",($scope,promoService)=>{
     $scope.unListedNo = 0;
     $scope.updatePromo = ()=>{
         $scope.promo = promoService.getPromo();
+        // console.log($scope.promo);
 
 
         // console.log($scope.promo);
@@ -515,8 +516,9 @@ app.controller("listProductCtrl",($scope,promoService)=>{
         data.imageFileUrl = img;
 
         // console.log(discountAmount);
-        console.log(key);
-        socket.emit("updateProduct",key,data);
+        // console.log(key);
+        // console.log($scope.promo[key].productType);
+        socket.emit("updateProduct",key,data,$scope.promo[key].productType);
     };
 
     socket.on("updateProductSuccess",()=>{

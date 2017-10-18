@@ -126,8 +126,12 @@ socket.on("connection",(client)=>{
 
         e.on('value',(res)=>{
             for(var x in res.val()){
-                promo[x] = res.val()[x];
+                for(var y in res.val()[x])
+                {
+                    promo[y] = res.val()[x][y];
+                }
                 // console.log(res.val()[x]);
+
             }
             // console.log('getting value from promo')
             socket.sockets.emit("updatePromoList",promo);
@@ -509,16 +513,36 @@ socket.on("connection",(client)=>{
 
     });
 
-    client.on("updateProduct",(key,product)=>{
+    client.on("updateProduct",(key,product,oriType)=>{
         var update = {};
-        update['/product/'+key] = product;
-        database.ref().update(update).then(()=>{
+        update['/product/'+oriType+'/'+key] = {};
+
+        // database.ref('/adconversations/'+inq.inquiryOwner+'/'+inq.inquiryID+'?'+inq.inquiryName+'/'+a.key).set({
+        database.ref().update(update);
+
+
+        database.ref('/product/'+product.productType+'/'+key).set(product)
+        .then(()=>{
             client.emit("updateProductSuccess");
         });
+
+        // database.ref('/product/'+product.productType).push(product)
+        // .then(()=>{
+        //     client.emit("updateProductSuccess");
+        // });
+
+
+        // database.ref('/product/'+product.productType).push(product)
+        // .then(()=>{
+        //
+        //     client.emit("updateProductSuccess");
+        // });
+
+
     });
 
     client.on("addProduct",(product)=>{
-        var a = database.ref('/product/').push(product)
+        var a = database.ref('/product/'+product.productType+'/').push(product)
         .then(()=>{
             client.emit("productSuccess");
         });
