@@ -12,8 +12,14 @@ document.addEventListener('DOMContentLoaded', function () { // for notifications
 });
 
 
-// var socket= io.connect("http://protected-sierra-93361.herokuapp.com");
-var socket= io.connect("http://localhost:3000");
+if(location.origin.includes("3000")){
+    var socket= io.connect("http://localhost:3000");
+    // console.log("3000");
+}
+else{
+    var socket= io.connect(location.origin);
+}
+
 
 
 app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
@@ -108,8 +114,8 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 
     $scope.openInq = (ID)=>{
-        // window.open("http://protected-sierra-93361.herokuapp.com/#!/home/inbox/chat/"+ID);
-        window.open("http://localhost:3000/#!/home/inbox/chat/"+ID);
+        // window.open("http://localhost:3000/#!/home/inbox/chat/"+ID);
+        window.open( location.origin+ "/#!/home/inbox/chat/"+ID);
 
     }
     $scope.getInq = ()=>{
@@ -313,7 +319,8 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         return $cookieStore.get('dbLogged');
     }, function(newValue) {
         if(!newValue){
-            window.location.href = "http://localhost:3000/#!/login";
+            window.location.href = location.origin+ "/#!/login";
+            // window.location.href = "http://localhost:3000/#!/login";
         }
     });
 
@@ -416,12 +423,12 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
                 if(message.messageType== "payment"){
                     notification.onclick = function () {
-                        window.open("http://protected-sierra-93361.herokuapp.com/#!/home/history");
+                        window.open(location.origin+ "/#!/home/history");
                         // window.open("http://localhost/#!/home/inbox/chat/"+ID);
                     };
                 }else{
                     notification.onclick = function () {
-                        window.open("http://protected-sierra-93361.herokuapp.com/#!/home/inbox/chat/"+msg.inquiryID.trim());
+                        window.open(location.origin+ "/#!/home/inbox/chat/"+msg.inquiryID.trim());
                         // window.open("http://localhost/#!/home/inbox/chat/"+ID);
                     };
                 }
