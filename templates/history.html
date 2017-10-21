@@ -61,7 +61,7 @@
                     </thead>
 
                     <tbody>
-                        <tr data-ng-repeat="p in payments|orderBy:orderByField:reverseSort">
+                        <tr data-ng-repeat="p in payments|orderBy:orderByField:reverseSort track by $index">
                             <td>
                                 {{p.time| date: 'medium'}}
                             </td>
@@ -72,7 +72,7 @@
 
                             <td>
 
-                                <div id="xymodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div id="xymodal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header bg-primary">
@@ -205,7 +205,7 @@
 
                                 </div>
 
-                                <a href data-toggle="modal" data-target="#xymodal">{{p.customer}}</a>
+                                <a href data-toggle="modal" data-target="#xymodal{{$index}}">{{p.customer}}</a>
 
 
                             </td>
