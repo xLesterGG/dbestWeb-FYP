@@ -644,6 +644,66 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
 });
 
 
+app.controller("userCtrl",($scope,userService,inqService)=>{
+
+    $scope.$watch(function() {
+        return userService.getUsers();
+    }, function() {
+        $scope.getUsers();
+    });
+
+    $scope.$watch(function() {
+        return inqService.getInq();
+    }, function(newContacts) {
+
+        $scope.getInq();
+    });
+
+    $scope.getInq = ()=>{
+        $scope.allInq = inqService.getInq();
+    }
+
+    socket.on("updateUserSuccess",()=>{
+        alert('User updated successfully');
+        location.reload();
+    });
+
+    $scope.updateUser = (key,name,email,contact,points,address)=>{
+        // console.log(key);
+        // console.log(name);
+        // console.log(email);
+        // console.log(contact);
+        // console.log(points);
+        // console.log(address);
+
+        var user = {};
+        user.name = name;
+        user.email = email;
+        user.contact = contact;
+        user.memberPoint = points;
+        user.address = address;
+        user.type = "member";
+
+        socket.emit("updateUser",key,user);
+
+    };
+
+
+
+    $scope.getUsers = ()=>{
+
+        $scope.users = {};
+        angular.forEach(userService.getUsers(), function(value, key){
+            if('memberPoint' in value){
+                $scope.users[key] = value;
+            }
+        });
+
+    }
+
+});
+
+
 app.controller("chatBoxCtrl",($scope,$stateParams,messageService,inqService,userService)=>{
 
     var rT = 0;
@@ -925,10 +985,10 @@ app.filter('unlisted', function() {
 
 app.filter('inqFilter', function(){
     return function (items,id) {
+        console.log(id)
         var filtered = [];
         angular.forEach(items, function(item){
-            // console.log(id);
-            // console.log(item.inquiryOwner.length);
+
             if (item.inquiryOwner === id){
                 filtered.push(item);
             }
@@ -996,6 +1056,10 @@ $urlRouterProvider.otherwise('home/inbox');
     .state('home.productlist',{
         url:'/productlist',
         templateUrl: "templates/productlist.html"
+    })
+    .state('home.userlist',{
+        url:'/userlist',
+        templateUrl: "templates/userlist.html"
     })
 
     ;

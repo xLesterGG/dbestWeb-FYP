@@ -1,0 +1,281 @@
+<div class="container" ng-controller="userCtrl" ng-init="getUsers()">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h2 class="display-4">Registered users</h2>
+
+                <table class="table">
+                    <tr>
+                        <!-- <th>
+                            IC Number
+                        </th> -->
+
+                        <th>
+                            Customer Name
+                        </th>
+
+                        <th>
+                            Customer Email
+                        </th>
+
+                        <th>
+                            Member Points
+                        </th>
+
+                        <th>
+                            Contact Number
+                        </th>
+
+                        <th>
+
+                        </th>
+                    </tr>
+
+
+                    <tr ng-repeat="(k,u) in users track by $index">
+                        <!-- <td>
+
+                        </td> -->
+
+                        <td>
+                            <div id="xymodal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary">
+                                            <h4 class="modal-title text-white ">Past inquiries</h4>
+                                        </div>
+
+                                        <div class="modal-body" >
+
+                                            <div class="row">
+                                                <div class="col-md-6" >
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <h6>Name:</h6>
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <h6><a>{{u.name}}</a></h6>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <h6>Email:</h6>
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <h6><a href="mailto:{{p.email}}">{{u.email}}</a></h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <h6>Address:</h6>
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <h6>
+                                                                <a href="https://www.google.com/maps?q={{u.address}}" target="_blank"> {{u.address}} </a>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-6" >
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <h6>Contact:</h6>
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <h6>{{u.contact}}</h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <h6>IC:</h6>
+                                                        </div>
+
+                                                        <!-- <div class="col-md-8">
+                                                            <h6><a href="https://www.google.com/search?q={{p.comname}}" target="_blank">{{p.comname}}</a></h6>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <br />
+
+
+                                            <table class="table" align="center">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th >
+                                                            #
+                                                        </th>
+
+                                                        <th>
+                                                            Inquiry Title
+                                                        </th>
+
+                                                        <th>
+                                                            # of items requested
+                                                        </th>
+
+                                                        <th>
+                                                            # of quotes sent
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr ng-repeat="y in allInq|inqFilter:k track by $index">
+                                                        <td class="">
+                                                            {{$index+1}}
+                                                        </td>
+
+                                                        <td class="">
+                                                            <a data-ng-click="reload()" target="_blank" href="#!/home/inbox/chat/{{y.inquiryID}}" >{{y.inquiryName}}</a>
+                                                        </td>
+
+                                                        <td>
+                                                            {{y.items.length}}
+                                                        </td>
+
+                                                        <td>
+                                                            <p ng-show="y.quotations == undefined">0</p>
+                                                            <p ng-show="y.quotations.length>0">{{y.quotations.length}}</p>
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+
+
+                                            </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <a href data-toggle="modal" data-target="#xymodal{{$index}}">{{u.name}}</a>
+                        </td>
+
+                        <td>
+                            <a href="mailto:{{u.email}}">{{u.email}}</a>
+                        </td>
+
+                        <td>
+                            {{u.memberPoint}}
+                        </td>
+
+                        <td>
+                            {{u.contact}}
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{{$index}}">
+                                Edit details
+                            </button>
+
+                            <div id="myModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary">
+                                            <h4 class="modal-title text-white">Edit User</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <fieldset>
+                                                <legend>
+                                                    User Information
+                                                </legend>
+
+                                                <div class="form-group row">
+                                                    <label for="cName" class="col-md-3 col-form-label">Customer Name</label>
+
+                                                    <div class="col-md-7">
+                                                        <input type="text" ng-model="cName" ng-init="cName =u.name"
+                                                        ng-value="u.name" class="form-control" id="cName" placeholder="Customer Name" >
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="email" class="col-md-3 col-form-label">Customer Email</label>
+
+                                                    <div class="col-md-7">
+                                                        <input type="text" ng-model="email" ng-init="email =u.email"
+                                                        ng-value="u.email" class="form-control" id="email" placeholder="Customer Email" >
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="contact" class="col-md-3 col-form-label">Customer Contact</label>
+
+                                                    <div class="col-md-7">
+                                                        <input type="text" ng-model="contact" ng-init="contact =u.contact"
+                                                        ng-value="u.contact" class="form-control" id="contact" placeholder="Customer Contact" >
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="points" class="col-md-3 col-form-label">Member Points </label>
+
+                                                    <div class="col-md-7">
+                                                        <input type="number" ng-model="points" ng-init="points =u.memberPoint"
+                                                        ng-value="u.memberPoint" class="form-control" id="points" placeholder="Member points" >
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="address" class="col-md-3 col-form-label">Customer's Address</label>
+                                                    <div class="col-md-7">
+                                                        <textarea ng-model="address" ng-init="address= u.address" class="form-control" id="address" placeholder="Address" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <button class="btn btn-primary" ng-click="updateUser(k,cName,email,contact,points,address)">Update user</button>
+
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </td>
+
+
+                    </tr>
+                </table>
+        </div>
+    </div>
+</div>

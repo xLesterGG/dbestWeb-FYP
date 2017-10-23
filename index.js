@@ -513,6 +513,15 @@ socket.on("connection",(client)=>{
 
     });
 
+
+    client.on("updateUser",(key,user)=>{
+        var update = {};
+        update['/users/'+key] = user;
+        database.ref().update(update).then(()=>{
+            client.emit("updateUserSuccess");
+        });
+    });
+
     client.on("updateProduct",(key,product,oriType)=>{
         var update = {};
         update['/product/'+oriType+'/'+key] = {};
