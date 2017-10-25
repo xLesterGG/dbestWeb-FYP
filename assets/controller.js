@@ -20,13 +20,95 @@ else{
     var socket= io.connect(location.origin);
 }
 
+if(firebase.apps.length === 0){
+    socket.emit("getConfig");
+}
+
+var config = {};
+var fbApp;
+var defaultStorage ;
+var database ;
+
+
+socket.on("getConfig",(c)=>{
+
+    // console.log();
+    // console.log('getting on chat');
+    config = c;
+    // firebase.initializeApp(config);
+    fbApp = firebase.initializeApp(config);
+    defaultStorage  = fbApp.storage().ref();
+    database = fbApp.database();
+
+    fbApp.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            currentUser = user
+            var z = database.ref('/users').once('value')
+            .then((res)=>{
+                var b = false;
+
+                for(var x in res.val()){
+                    //  us[x] = res.val()[x];
+                    if(res.val()[x].email == user.email && 'type' in res.val()[x] && res.val()[x].type =='admin'){
+                        b = true;
+                        break;
+                    }
+                }
+
+                if(!b){
+                    alert("You are not an admin. ");
+                    fbApp.auth().signOut()
+                    location.reload();
+                }else{
+                    if(location.hash.includes("login"))
+                    {
+                        window.location.href = location.origin+ "/#!/home/inbox";
+                    }
+                    console.log("logged in");
+                }
+            });
+
+
+
+        } else {
+            console.log("not logged in");
+
+            if(!location.hash.includes("login")){
+                window.location.href = location.origin+ "/#!/login";
+
+            }
+        }
+
+    });
+});
+
+
 
 
 app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
-    if($cookieStore.get('dbLogged'))
-    {
-        $state.go('home.inbox');
-    }
+
+    $scope.login = (email,pass)=>{
+
+        fbApp.auth().signInWithEmailAndPassword(email, pass)
+        .catch((error)=>{
+
+            // console.log(error);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            if(errorCode == 'auth/wrong-password'){
+                alert("Wrong password, please try again");
+            }else if(errorCode == 'auth/user-not-found'){
+                alert("No such account, please try again");
+            }else{
+                alert(errorMessage);
+            }
+            location.reload();
+
+        });
+
+
+    };
 
     $scope.showlogin = true;
     $scope.showsignup = false;
@@ -50,32 +132,19 @@ app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
         location.reload();
     });
 
-
-    $scope.login = (email,pass)=>{
-        // console.log(email + pass);
-        socket.emit("loginUser",email,pass);
-    };
-
     socket.on("registersuccess",()=>{
         location.reload();
         alert("Registered successfully!");
     });
 
-    socket.on("notAdmin",()=>{
-        alert("You are not an admin. ");
-        location.reload();
-    });
+    // socket.on("notAdmin",()=>{
+    //     alert("You are not an admin. ");
+    //     location.reload();
+    // });
 
     socket.on("resetSuccessful",(mess)=>{
         alert(mess);
         location.reload();
-    });
-
-    socket.on("redirectToInbox",(user)=>{
-        $state.go('home.inbox');
-
-        $cookieStore.put('dbLogged',true);
-
     });
 
     socket.on("redirectToLogin",(user)=>{
@@ -85,6 +154,15 @@ app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
 });
 
 app.controller("historyCtrl",($scope,inqService,userService)=>{
+
+    fbApp.auth().onAuthStateChanged(function(user) {
+        if (!user){
+            console.log("not logged in");
+            window.location.href = location.origin+ "/#!/login";
+        }
+
+    });
+
     $scope.orderByField = 'time';
     $scope.reverseSort = false;
 
@@ -166,25 +244,19 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,$cookieStore,promoService)=>{
 
+    fbApp.auth().onAuthStateChanged(function(user) {
+        if (!user){
+            console.log("not logged in");
+            window.location.href = location.origin+ "/#!/login";
+        }
+
+    });
+
     window.onfocus = ()=>{
         $scope.$apply();
     }
 
-    if(firebase.apps.length === 0){
-        socket.emit("getConfig");
-    }
 
-    var config = {};
-    var fbApp;
-    var defaultStorage ;
-
-
-    socket.on("getConfig",(c)=>{
-        // console.log('getting on chat');
-        config = c;
-        fbApp = firebase.initializeApp(config);
-        defaultStorage  = fbApp.storage().ref();
-    });
 
     $scope.file_changed = function(element) {
         $scope.$apply(function(scope) {
@@ -307,22 +379,10 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
     $scope.selected = "inbox";
 
-    if(!$cookieStore.get('dbLogged')){
-        socket.emit("getUser");
-    }
 
-    $scope.abc= function logshit(){
-        console.log($cookieStore.get('dbLogged'));
-    }
 
-    $scope.$watch(function() {
-        return $cookieStore.get('dbLogged');
-    }, function(newValue) {
-        if(!newValue){
-            window.location.href = location.origin+ "/#!/login";
-            // window.location.href = "http://localhost:3000/#!/login";
-        }
-    });
+
+
 
 
 
@@ -343,9 +403,8 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     });
 
     $scope.logout = ()=>{
-        $cookieStore.remove('dbLogged');
 
-        window.location.reload();
+        fbApp.auth().signOut()
 
     };
 

@@ -688,65 +688,65 @@ socket.on("connection",(client)=>{
         });
     });
 
-    client.on("loginUser",(email,password)=>{
-        console.log('user with '+ email + ' trying to log in');
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-          // Handle Errors here.
-        //   console.log(error);
-          var errorCode = error.code;
-          var errorMessage = error.message;
+    // client.on("loginUser",(email,password)=>{
+    //     console.log('user with '+ email + ' trying to log in');
+    //     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    //       // Handle Errors here.
+    //     //   console.log(error);
+    //       var errorCode = error.code;
+    //       var errorMessage = error.message;
+    //
+    //       if(errorCode == 'auth/wrong-password'){
+    //           client.emit("errorMsg","Wrong password, please try again");
+    //       }else if(errorCode == 'auth/user-not-found'){
+    //           client.emit("errorMsg","No such account, please try again");
+    //       }else{
+    //           client.emit("errorMsg",errorMessage);
+    //       }
+    //
+    //     });
+    //
+    //     firebase.auth().onAuthStateChanged(user => {
+    //         if(user!=undefined) {
+    //             console.log('user logged in');
+    //         // window.location = 'home.html'; //After successful login, user will be redirected to home.html
+    //             currentUser = user
+    //
+    //             var z = database.ref('/users').once('value')
+    //             .then((res)=>{
+    //                 var b = false;
+    //
+    //                 for(var x in res.val()){
+    //                     //  us[x] = res.val()[x];
+    //                     if(res.val()[x].email == email && 'type' in res.val()[x] && res.val()[x].type =='admin'){
+    //                         b = true;
+    //                         break;
+    //                     }
+    //                 }
+    //
+    //                 if(b){
+    //                     client.emit("redirectToInbox",user);
+    //                 }else{
+    //                     client.emit("notAdmin");
+    //                 }
+    //             });
+    //
+    //         }else{
+    //             // console.log('logged out');
+    //             // client.emit("redirectToLogin1");
+    //         }
+    //     });
+    //
+    //
+    // });
 
-          if(errorCode == 'auth/wrong-password'){
-              client.emit("errorMsg","Wrong password, please try again");
-          }else if(errorCode == 'auth/user-not-found'){
-              client.emit("errorMsg","No such account, please try again");
-          }else{
-              client.emit("errorMsg",errorMessage);
-          }
-
-        });
-
-        firebase.auth().onAuthStateChanged(user => {
-            if(user!=undefined) {
-                console.log('user logged in');
-            // window.location = 'home.html'; //After successful login, user will be redirected to home.html
-                currentUser = user
-
-                var z = database.ref('/users').once('value')
-                .then((res)=>{
-                    var b = false;
-
-                    for(var x in res.val()){
-                        //  us[x] = res.val()[x];
-                        if(res.val()[x].email == email && 'type' in res.val()[x] && res.val()[x].type =='admin'){
-                            b = true;
-                            break;
-                        }
-                    }
-
-                    if(b){
-                        client.emit("redirectToInbox",user);
-                    }else{
-                        client.emit("notAdmin");
-                    }
-                });
-
-            }else{
-                // console.log('logged out');
-                // client.emit("redirectToLogin1");
-            }
-        });
-
-
-    });
-
-    client.on("logoutUser",()=>{
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
-        }, function(error) {
-          // An error happened.
-        });
-    });
+    // client.on("logoutUser",()=>{
+    //     firebase.auth().signOut().then(function() {
+    //       // Sign-out successful.
+    //     }, function(error) {
+    //       // An error happened.
+    //     });
+    // });
 
     client.on("sendQuote",(b,inq)=>{
 
