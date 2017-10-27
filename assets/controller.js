@@ -20,9 +20,9 @@ else{
     var socket= io.connect(location.origin);
 }
 
-if(firebase.apps.length === 0){
+// if(firebase.apps.length === 0){
     socket.emit("getConfig");
-}
+// }
 
 var config = {};
 var fbApp;
