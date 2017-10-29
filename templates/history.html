@@ -4,6 +4,25 @@
             <div class="col-md-12">
                 <h2 class="display-4">Payments</h2>
 
+                <div class="row">
+                    <div class="col-md-3 col-sm-8 form-group">
+                        <input ng-model="query.paymentID" class="form-control" placeholder="Transaction ID"/>
+                    </div>
+
+                    <div class="col-md-3 col-sm-8 form-group">
+                        <input ng-model="query.customer" class="form-control" placeholder="Customer Name"/>
+                    </div>
+
+                    <div class="col-md-3 col-sm-8 form-group">
+                        <input ng-model="query.inquiryName" class="form-control" placeholder="Inquiry Name"/>
+                    </div>
+
+                    <div class="col-md-3 col-sm-8 form-group">
+                        <input type="" ng-model="query.gTotal" class="form-control" placeholder="Amount(exclude RM)"/>
+                    </div>
+
+                </div>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -61,7 +80,7 @@
                     </thead>
 
                     <tbody>
-                        <tr data-ng-repeat="p in payments|orderBy:orderByField:reverseSort track by $index">
+                        <tr data-ng-repeat="p in payments|orderBy:orderByField:reverseSort|filter:query track by $index">
                             <td>
                                 {{p.time| date: 'medium'}}
                             </td>

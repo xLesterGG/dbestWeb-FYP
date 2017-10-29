@@ -218,6 +218,9 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
                             $scope.toAdd.inquiryID = $scope.allInq[k].inquiryID;
                             $scope.toAdd.inquiryName = $scope.allInq[k].inquiryName;
                             $scope.toAdd.quote = $scope.allInq[k].quotations[i];
+
+                            $scope.toAdd.gTotal = $scope.allInq[k].quotations[i].gTotal.toFixed(2);
+
                             $scope.toAdd.quoteNumber = i + 1;
                             $scope.toAdd.customerID = $scope.allInq[k].inquiryOwner;
 
@@ -227,8 +230,11 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
                             $scope.toAdd.email = $scope.users[$scope.allInq[k].inquiryOwner].email
                             // $scope.toAdd.comname = $scope.users[$scope.allInq[k].inquiryOwner].comname
 
+                            // console.log($scope.toAdd.quote);
+
 
                             $scope.payments.push($scope.toAdd);
+                            // $scope.payments[k]= $scope.toAdd;
                             // console.log($scope.payments)
                         }
                     }
@@ -255,8 +261,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     window.onfocus = ()=>{
         $scope.$apply();
     }
-
-
 
     $scope.file_changed = function(element) {
         $scope.$apply(function(scope) {
@@ -378,13 +382,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     }
 
     $scope.selected = "inbox";
-
-
-
-
-
-
-
 
     $scope.view = ()=>{
         $('.image').viewer();
@@ -1044,7 +1041,7 @@ app.filter('unlisted', function() {
 
 app.filter('inqFilter', function(){
     return function (items,id) {
-        console.log(id)
+        // console.log(id)
         var filtered = [];
         angular.forEach(items, function(item){
 
