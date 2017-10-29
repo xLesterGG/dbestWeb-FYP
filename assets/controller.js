@@ -137,10 +137,7 @@ app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
         alert("Registered successfully!");
     });
 
-    // socket.on("notAdmin",()=>{
-    //     alert("You are not an admin. ");
-    //     location.reload();
-    // });
+
 
     socket.on("resetSuccessful",(mess)=>{
         alert(mess);
@@ -248,7 +245,7 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 });
 
-app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,$cookieStore,promoService)=>{
+app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,promoService)=>{
 
     fbApp.auth().onAuthStateChanged(function(user) {
         if (!user){
@@ -258,9 +255,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
     });
 
-    window.onfocus = ()=>{
-        $scope.$apply();
-    }
 
     $scope.file_changed = function(element) {
         $scope.$apply(function(scope) {
@@ -412,11 +406,13 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     $scope.allInquiryList = [];
 
     $scope.messages = [];
+    $scope.users = [];
 
     $scope.hideName = true;
     $scope.hideRoom = false;
 
     socket.on("loadMessage",(msg)=>{
+
         var message = msg;
         messageService.addMessage(message);
         $scope.$apply();
@@ -434,6 +430,8 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
         messageService.addMessage(message);
         $scope.$apply();
+
+        $scope.updateInq();
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
@@ -461,18 +459,14 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
                     // console.log("dont have")
 
                     notification = new Notification($scope.notificationtitle, {
-                        icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd0XHy-MpwWSHpn4RbwC8dKSWeabXTe3jf6uIZGldY26367BPL',
+                        icon: '',
                         body: message.messageText,
                     });
 
                     setTimeout(notification.close.bind(notification), 3000);
 
                 }
-                // notification = new Notification($scope.notificationtitle, {
-                //     icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd0XHy-MpwWSHpn4RbwC8dKSWeabXTe3jf6uIZGldY26367BPL',
-                //     body: message.messageText,
-                // });
-
+ 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd0XHy-MpwWSHpn4RbwC8dKSWeabXTe3jf6uIZGldY26367BPL',
 
                 notification.close();
 
@@ -494,26 +488,69 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
     });
 
+
+
     socket.on("updatePromoList",(promoList)=>{
         promoService.addPromo(promoList);
         $scope.$apply();
     });
 
+
+
+
     socket.on("updateUserList",(userList)=>{
+        $scope.users = userList;
         userService.addUsers(userList);
         $scope.$apply();
 
+        $scope.updateInq();
+
     });
 
+    $scope.updateInq = ()=>{
+
+        $scope.messages= messageService.getMessage();
+        // console.log(messageService.getMessage());
+
+        $scope.allInquiryList = inqService.getInq();
+        // console.log($scope.allInquiryList);
+
+        angular.forEach($scope.allInquiryList, function(item){
+            var tMessages = '';
+            if($scope.users[item.inquiryOwner]){
+                if('name' in $scope.users[item.inquiryOwner]){
+                    item.customer = $scope.users[item.inquiryOwner].name;
+                }else{
+                    item.customer = "no name";
+                }
+            }
+
+
+            for(var j=0;j<$scope.messages.length;j++){
+                if($scope.messages[j].inquiryOwner == item.inquiryOwner){
+                    tMessages = tMessages  + " "+  $scope.messages[j].messageText;
+                }
+            }
+            // console.log(tMessages);
+            item.messages=tMessages;
+
+        });
+
+        if($scope.allInquiryList.length!=0){
+            console.log($scope.allInquiryList);
+        }
+
+    };
+
     socket.on("updateInquiryList",(inquiryList)=>{
-        $scope.allInquiryList = inquiryList;
 
         inqService.addInq(inquiryList);
         $scope.$apply();
+
+        $scope.updateInq();
     });
 
     $scope.updateRead = (inq)=>{
-
         socket.emit("updateLastRead",inq);
     };
 });

@@ -124,17 +124,27 @@ socket.on("connection",(client)=>{
 
         var e = database.ref('/product'); // for change
 
-        e.on('value',(res)=>{
-            for(var x in res.val()){
-                for(var y in res.val()[x])
-                {
-                    promo[y] = res.val()[x][y];
+        database.ref('/conversations').once('value').then((res)=>{ // retrieve once client is connected
+            console.log('get once');
+            if(res.val() != null ){
+                for(var key in res.val()){
+                    conversations[key] = res.val()[key];
                 }
-                // console.log(res.val()[x]);
 
+                for(var k in conversations){
+                  for(var j in conversations[k]){
+                    var temp = conversations[k][j];
+                    temp.inquiryID = k;
+                    client.emit("loadMessage",temp);
+                  }
+                }
+
+                isReady = true;
             }
-            // console.log('getting value from promo')
-            socket.sockets.emit("updatePromoList",promo);
+            else{
+                //something to say no enquiries yet
+                isReady = true;
+            }
         });
 
         d.on('value',(res)=>{
@@ -157,29 +167,25 @@ socket.on("connection",(client)=>{
             socket.sockets.emit("updateInquiryList",inquiries);
         });
 
-        database.ref('/conversations').once('value').then((res)=>{ // retrieve once client is connected
-            console.log('get once');
-            if(res.val() != null ){
-                for(var key in res.val()){
-                    conversations[key] = res.val()[key];
-                }
 
-                for(var k in conversations){
-                  for(var j in conversations[k]){
-                    var temp = conversations[k][j];
-                    temp.inquiryID = k;
-                    client.emit("loadMessage",temp);
-                    // socket.sockets.emit("loadMessage",temp);
-                  }
+        e.on('value',(res)=>{
+            for(var x in res.val()){
+                for(var y in res.val()[x])
+                {
+                    promo[y] = res.val()[x][y];
                 }
+                // console.log(res.val()[x]);
 
-                isReady = true;
             }
-            else{
-                //something to say no enquiries yet
-                isReady = true;
-            }
+            // console.log('getting value from promo')
+            socket.sockets.emit("updatePromoList",promo);
         });
+
+
+
+
+
+
 
         b.on('child_added',(res)=>{ // when a new chat is created (called when person in new room sends message), create new entry in associative array
             if(isReady){
