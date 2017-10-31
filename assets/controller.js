@@ -29,6 +29,7 @@ var fbApp;
 var defaultStorage ;
 var database ;
 
+var currentUser;
 
 socket.on("getConfig",(c)=>{
 
@@ -252,8 +253,26 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
             console.log("not logged in");
             window.location.href = location.origin+ "/#!/login";
         }
-
     });
+
+    $scope.sendPush = (message)=>{
+        // console.log(message);
+        if(message!='' && message){
+            // console.log('pushing');
+            var obj={};
+            obj.message = message;
+            obj.date = parseInt(new Date().getTime());
+            socket.emit("sendPush",obj);
+        }
+
+        socket.on("pushSuccess",()=>{
+            alert('Message sent successfully');
+            location.reload();
+
+        });
+
+    };
+
 
 
     $scope.file_changed = function(element) {

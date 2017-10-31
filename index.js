@@ -563,6 +563,15 @@ socket.on("connection",(client)=>{
         });
     });
 
+
+    client.on("sendPush",(message)=>{
+        var a = database.ref('/push/0/').set(message)
+        .then(()=>{
+            client.emit("pushSuccess");
+        });
+    });
+
+
     client.on("toTrash",(inq)=>{
         var data = inq;
         data.status="trash";
