@@ -5,16 +5,23 @@ var server = require('http').createServer(app);
 var io = require('socket.io');
 var uuid = require('node-uuid');
 
+// var config = {
+//     apiKey: "AIzaSyDBeAd9ZtPMV7NFMaNDAkW__qyDWjcFi_I",
+//     authDomain: "dbest-7485e.firebaseapp.com",
+//     databaseURL: "https://dbest-7485e.firebaseio.com",
+//     projectId: "dbest-7485e",
+//     storageBucket: "dbest-7485e.appspot.com",
+//     messagingSenderId: "642003666233"
+// };
+
 var config = {
-    apiKey: "AIzaSyDBeAd9ZtPMV7NFMaNDAkW__qyDWjcFi_I",
-    authDomain: "dbest-7485e.firebaseapp.com",
-    databaseURL: "https://dbest-7485e.firebaseio.com",
-    projectId: "dbest-7485e",
-    storageBucket: "dbest-7485e.appspot.com",
-    messagingSenderId: "642003666233"
-};
-
-
+    apiKey: "AIzaSyDhSwnH4r5RcP-AFErHDdh3kjFfyyOr7kc",
+    authDomain: "cloudnotification-afe9c.firebaseapp.com",
+    databaseURL: "https://cloudnotification-afe9c.firebaseio.com",
+    projectId: "cloudnotification-afe9c",
+    storageBucket: "cloudnotification-afe9c.appspot.com",
+    messagingSenderId: "942434564935"
+  };
 
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 
@@ -67,6 +74,11 @@ app.use('/js',express.static(__dirname+'/node_modules/chartist/dist/'));
 app.get('/',(req,res)=>{
     // res.send('hello');
     res.sendFile(__dirname +'/index1.html');
+});
+
+app.get('/firebase-messaging-sw.js',(req,res)=>{
+    // res.send('hello');
+    res.sendFile(__dirname +'/firebase-messanging-sw.js');
 });
 
 

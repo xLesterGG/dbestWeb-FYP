@@ -28,8 +28,10 @@ var config = {};
 var fbApp;
 var defaultStorage ;
 var database ;
-
+var messaging;
 var currentUser;
+
+var key;
 
 socket.on("getConfig",(c)=>{
 
@@ -40,6 +42,58 @@ socket.on("getConfig",(c)=>{
     fbApp = firebase.initializeApp(config);
     defaultStorage  = fbApp.storage().ref();
     database = fbApp.database();
+
+    // messaging = fbApp.messaging();
+    //
+    // messaging.requestPermission()
+    // .then(()=>{
+    //     console.log('have permission');
+    //
+    //     return messaging.getToken();
+    // })
+    // .then((token)=>{
+    //     key = token;
+    //     console.log(token);
+    // })
+    // .catch((err)=>{
+    //     console.log('error',err);
+    // })
+
+
+    // messaging.requestPermission()
+    // .then(function() {
+    //     console.log('Notification permission granted.');
+    //     console.log(messaging.getToken());
+    //
+    //
+    // });
+
+    // messaging.getToken().then((currentToken)=>{
+    //     if(currentToken){
+    //         console.log(currentToken);
+    //         key = currentToken;
+    //     }
+    // });
+
+    // messaging.getToken()
+    // .then(function(currentToken) {
+    //     if (currentToken) {
+    //         console.log(currentToken);
+    //
+    //     } else {
+    //         // Show permission request.
+    //         console.log('No Instance ID token available. Request permission to generate one.');
+    //
+    //     }
+    // })
+    // .catch(function(err) {
+    //     console.log('An error occurred while retrieving token. ', err);
+    // });
+
+
+
+
+
 
     fbApp.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -246,7 +300,7 @@ app.controller("historyCtrl",($scope,inqService,userService)=>{
 
 });
 
-app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,promoService)=>{
+app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqService,userService,promoService,$http)=>{
 
     fbApp.auth().onAuthStateChanged(function(user) {
         if (!user){
@@ -256,20 +310,66 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     });
 
     $scope.sendPush = (message)=>{
+        // console.log(key);
         // console.log(message);
-        if(message!='' && message){
-            // console.log('pushing');
-            var obj={};
-            obj.message = message;
-            obj.date = parseInt(new Date().getTime());
-            socket.emit("sendPush",obj);
+        var url="https://fcm.googleapis.com/fcm/send";
+        // var url = 'https://fcm.googleapis.com/v1/projects/cloudnotification-afe9c/messages:send HTTP/1.1'
+
+        var data = {
+            "to" : '/topics/foodhero',
+            "notification" : {
+            "body" : message,
+            "title" : "FCM Message",
+            "sound": "default"
+            }
+        };
+
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=AAAA2216O0c:APA91bF8t6y9ETjDNH7ed19N5zeqo49TSOAMa2wLZPUxU9fJhe8ZRIadCMmw8a28ORBLa6GfFbnCyq5j-KJLxHvW0bW6XV1-o8QqoTyKhd920uDvyP9lcEu7oa5CIt7TD2hWACESYADs'
+            }
+        };
+
+        if (confirm('Are you sure you want to post this message? Please double check')) {
+            $http.post(url,data,config)
+            .then((response)=>{
+                // console.log(response.data);
+                if('message_id' in response.data){
+                    alert('Message posted successfully!');
+                    location.reload();
+
+                }else{
+                    alert('Error, please contact your developer');
+                }
+
+
+            },(response)=>{
+                //error
+                alert('Error, please contact your developer');
+                console.log("error")
+                console.log(response.data);
+            });
         }
 
-        socket.on("pushSuccess",()=>{
-            alert('Message sent successfully');
-            location.reload();
 
-        });
+
+
+
+        // if(message!='' && message){
+        //     // console.log('pushing');
+        //     var obj={};
+        //     obj.message = message;
+        //     obj.date = parseInt(new Date().getTime());
+        //     socket.emit("sendPush",obj);
+        // }
+        //
+        // socket.on("pushSuccess",()=>{
+        //     alert('Message sent successfully');
+        //     location.reload();
+        //
+        // });
 
     };
 
@@ -556,7 +656,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         });
 
         if($scope.allInquiryList.length!=0){
-            console.log($scope.allInquiryList);
+            // console.log($scope.allInquiryList);
         }
 
     };
