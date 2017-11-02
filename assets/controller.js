@@ -324,11 +324,12 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
             }
         };
 
+        // 'Authorization': 'key=AAAA2216O0c:APA91bF8t6y9ETjDNH7ed19N5zeqo49TSOAMa2wLZPUxU9fJhe8ZRIadCMmw8a28ORBLa6GfFbnCyq5j-KJLxHvW0bW6XV1-o8QqoTyKhd920uDvyP9lcEu7oa5CIt7TD2hWACESYADs'
 
         var config = {
             headers : {
                 'Content-Type': 'application/json',
-                'Authorization': 'key=AAAA2216O0c:APA91bF8t6y9ETjDNH7ed19N5zeqo49TSOAMa2wLZPUxU9fJhe8ZRIadCMmw8a28ORBLa6GfFbnCyq5j-KJLxHvW0bW6XV1-o8QqoTyKhd920uDvyP9lcEu7oa5CIt7TD2hWACESYADs'
+                'Authorization': 'key=AAAAlXpmhTk:APA91bGRzdHVMqtR8r2w1UYEmKt8y15-YqXb_2f2A_gEmBQxJTDLprg9fNUfAmKCiOjF1FDjZOnPwAYgCG2q0TIi8FMJfa0EpbAot9rGrXd2o3MTNfS-nYWjcCnUr8nALPoRF5aLed1T'
             }
         };
 
