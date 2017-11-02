@@ -309,17 +309,17 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
         }
     });
 
-    $scope.sendPush = (message)=>{
+    $scope.sendPush = (title,message)=>{
         // console.log(key);
         // console.log(message);
         var url="https://fcm.googleapis.com/fcm/send";
         // var url = 'https://fcm.googleapis.com/v1/projects/cloudnotification-afe9c/messages:send HTTP/1.1'
 
         var data = {
-            "to" : '/topics/foodhero',
+            "to" : '/topics/dbest',
             "notification" : {
             "body" : message,
-            "title" : "FCM Message",
+            "title" : title,
             "sound": "default"
             }
         };

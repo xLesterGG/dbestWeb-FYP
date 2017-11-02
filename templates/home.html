@@ -81,6 +81,18 @@
 
                     <div class="row">
                         <div class="col-md-12">
+                            Message title:
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" ng-model="title" placeholder="Your message title"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             Your message:
                         </div>
                     </div>
@@ -98,7 +110,7 @@
                         </div>
 
                         <div class="col-md-2" style="margin-top:10px">
-                            <button type="button" class="btn btn-primary btn-md" data-ng-click="sendPush(pushMsg)">Send</button>
+                            <button type="button" class="btn btn-primary btn-md" data-ng-click="sendPush(title,pushMsg)">Send</button>
                         </div>
                     </div>
 
