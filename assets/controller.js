@@ -756,6 +756,8 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
 
 
     // $scope.promo = promoService.getPromo();
+    $scope.percent = 0;
+    $scope.showbar = false;
     $scope.dothis = ()=>{
         console.log($scope.discount);
     };
@@ -804,13 +806,21 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
                 }
 
                 if($scope.selected){
+
+                    $scope.selected = false;
+
+                    $scope.showbar = true;
                     var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+element.files[0].name);
 
                     var uploadTask = imgRef.put(element.files[0]);
                     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,function(snapshot) {
 
                         $scope.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        // console.log('Upload is ' + progress + '% done');
+                        console.log('Upload is ' + $scope.progress + '% done');
+                        $scope.percent = $scope.progress;
+
+                        $scope.$apply();
+
                     }, function(error) {
 
                         alert("error uploading, please try again")
