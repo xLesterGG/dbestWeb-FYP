@@ -310,8 +310,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
     });
 
     $scope.sendPush = (title,message)=>{
-        // console.log(key);
-        // console.log(message);
+
         var url="https://fcm.googleapis.com/fcm/send";
         // var url = 'https://fcm.googleapis.com/v1/projects/cloudnotification-afe9c/messages:send HTTP/1.1'
 
@@ -323,8 +322,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
             "sound": "default"
             }
         };
-
-        // 'Authorization': 'key=AAAA2216O0c:APA91bF8t6y9ETjDNH7ed19N5zeqo49TSOAMa2wLZPUxU9fJhe8ZRIadCMmw8a28ORBLa6GfFbnCyq5j-KJLxHvW0bW6XV1-o8QqoTyKhd920uDvyP9lcEu7oa5CIt7TD2hWACESYADs'
 
         var config = {
             headers : {
@@ -353,25 +350,6 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
                 console.log(response.data);
             });
         }
-
-
-
-
-
-        // if(message!='' && message){
-        //     // console.log('pushing');
-        //     var obj={};
-        //     obj.message = message;
-        //     obj.date = parseInt(new Date().getTime());
-        //     socket.emit("sendPush",obj);
-        // }
-        //
-        // socket.on("pushSuccess",()=>{
-        //     alert('Message sent successfully');
-        //     location.reload();
-        //
-        // });
-
     };
 
 
@@ -692,10 +670,7 @@ app.controller("listProductCtrl",($scope,promoService)=>{
     $scope.unListedNo = 0;
     $scope.updatePromo = ()=>{
         $scope.promo = promoService.getPromo();
-        // console.log($scope.promo);
 
-
-        // console.log($scope.promo);
         var x = 0;
         var y = 0;
         if($scope.promo)
@@ -713,13 +688,70 @@ app.controller("listProductCtrl",($scope,promoService)=>{
             $scope.unlistedNo = y;
         }
 
-        // for(var i = 0 ; i < $scope.promo.length; i ++){
-        //     // if($scope.promo[i])
-        //     console.log($scope.promo[i]);
-        // }
-
-        // console.log($scope.promo);
     };
+
+    // var imgRef = defaultStorage.child('promo'+ '/'+ type +'/'+element.files[0].name);
+    // $scope.upload = (key,productName,type,desc,promotion,discountAmount)=>{
+    //     $scope.update(key,productName,type,desc,promotion,discountAmount,downloadURL);
+
+    $scope.selected = false;
+
+    $scope.percent =  0 ;
+
+
+    $scope.file_changed = function(element) {
+        $scope.$apply(function(scope) {
+
+            var fileReader = new FileReader();
+            fileReader.onload = ()=>{
+                $scope.loadedFile = fileReader.result;
+                   $scope.$apply();
+            };
+
+            fileReader.readAsDataURL(element.files[0]);
+            var files = element.files; //FileList object
+
+            // console.log($scope.key);
+            // console.log($scope.productName);
+            // console.log($scope.type);
+            // console.log($scope.desc);
+            // console.log($scope.promotion);
+            // console.log($scope.discountAmount);
+
+            $scope.selected = true;
+
+            $scope.upload = (key,productName,type,desc,promotion,discountAmount)=>{
+
+                $scope.showbar = true;
+
+
+                var imgRef = defaultStorage.child('promo'+ '/'+ type +'/'+element.files[0].name);
+
+                var uploadTask = imgRef.put(element.files[0]);
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,function(snapshot) {
+
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    $scope.percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    // console.log('Upload is ' + progress + '% done');
+                }, function(error) {
+
+                    alert("error uploading, please try again")
+                }, function() {
+                    // Upload completed successfully, now we can get the download URL
+                    var downloadURL = uploadTask.snapshot.downloadURL;
+                    console.log(downloadURL);
+
+                     $scope.update(key,productName,type,desc,promotion,discountAmount,downloadURL);
+
+                });
+            }
+
+        });
+    };
+
+
+
+
 
     $scope.update = (key,productName,type,desc,promotion,discountAmount,img)=>{
         var data = {};
@@ -735,9 +767,6 @@ app.controller("listProductCtrl",($scope,promoService)=>{
 
         data.imageFileUrl = img;
 
-        // console.log(discountAmount);
-        // console.log(key);
-        // console.log($scope.promo[key].productType);
         socket.emit("updateProduct",key,data,$scope.promo[key].productType);
     };
 
@@ -766,15 +795,15 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
     // console.log(firebase.apps.length);
     var defaultStorage ;
 
-    function checkFlag() {
-        if(!firebase.apps.length) {
-           window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
-        } else {
-
-          defaultStorage  = firebase.storage().ref();
-        }
-    }
-    checkFlag();
+    // function checkFlag() {
+    //     if(!firebase.apps.length) {
+    //        window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
+    //     } else {
+    //
+    //       defaultStorage  = firebase.storage().ref();
+    //     }
+    // }
+    // checkFlag();
 
 
     socket.on("productSuccess",()=>{

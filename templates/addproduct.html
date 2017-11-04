@@ -163,8 +163,10 @@
 </div>
 
 <script>
-    $("#file2").change(function(e) {
 
+
+    $("#file2").change(function(e) {
+        console.log('changed');
         for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
 
             var file = e.originalEvent.srcElement.files[i];
