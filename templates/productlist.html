@@ -7,293 +7,229 @@
 
     <br />
 
-    <div id="accordion" role="tablist" style="overflow-y: scroll; height:400px;" class="rounded">
-        <div data-ng-repeat="(k,p) in promo|listed track by $index">
-            <div id="productModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div style="overflow-y: scroll; height:400px;border-bottom: 1px solid #e6e6e6;">
+        <table class="table" >
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th scope="col">
+                        #
+                    </th>
 
+                    <th scope="col">
+                        Product Name
+                    </th>
 
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
+                    <th scope="col">
+                        Product Category
+                    </th>
+
+                    <th scope="col">
+                        Listing Status
+                    </th>
+
+                    <th scope="col">
+                        Discount Amount (%)
+                    </th>
+
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr scope="row" data-ng-repeat="(k,p) in promo|listed track by $index">
+                    <td>
+                        {{$index+1}}
+                    </td>
+
+                    <td>
+                        {{p.productName}}
+                    </td>
+
+                    <td>
+                        {{p.productType}}
+                    </td>
+
+                    <td class="text-success font-weight-bold">
+                        True
+                    </td>
+
+                    <td>
+                        <div class="col-md" ng-if="p.discountPercent!='0'">
+                            {{p.discountPercent}}%
                         </div>
-
-                        <div class="modal-body">
-                            <fieldset>
-                                <legend>
-                                    Product Information
-                                </legend>
-                                <!-- {{p.productName}} -->
-
-
-                                <div class="form-group row">
-                                    <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="pName[$index]" ng-init="pName[$index] =p.productName"
-                                        ng-value="p.productName" class="form-control" id="pName" placeholder="Product Name" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label">Product type*</label>
-                                    <!-- {{p.productType}} -->
-
-                                    <div class="col-md-7" ng-init="type[$index]=p.productType" >
-                                        <div class="form-check">
-                                            <label for="paint" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="paint" data-ng-model="type[$index]" data-ng-value="'paint'">
-                                                Paint
-                                            </label>
-                                        </div>
-
-
-
-                                        <div class="form-check">
-                                            <label  for="powert" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="powert" data-ng-model="type[$index]" data-ng-value="'powertool'" >
-                                                Power Tool
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label  for="handt"  class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="handt" data-ng-model="type[$index]" data-ng-value="'handtool'">
-                                                Hand tool
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="waters"  class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="waters" data-ng-model="type[$index]" data-ng-value="'waterseries'">
-                                                Water Series
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="elecs" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="elecs" data-ng-model="type[$index]" data-ng-value="'electricalseries'">
-                                                Electrical Series
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="others" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="others" data-ng-model="type[$index]" data-ng-value="'others'">
-                                                Others
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="promo" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="promo" data-ng-model="type[$index]" data-ng-value="'promo'">
-                                                Promotion
-                                            </label>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="desc" class="col-md-3 col-form-label">Product Description</label>
-                                    <div class="col-md-7">
-                                        <textarea ng-model="desc[$index]" ng-init="desc[$index]= p.description" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label">Listing Status*</label>
-
-                                    <div class="col-md-7" >
-
-                                        <div class="form-check">
-                                            <label for="false" class="form-check-label">
-                                                <input class="form-check-input" ng-init="promo123[$index]=p.listing" type="radio" id="false" data-ng-model="promo123[$index]" data-ng-value="'false'">
-                                                False
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="true" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="true" data-ng-model="promo123[$index]" data-ng-value="'true'" >
-                                                True
-                                            </label>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label class="col-md-3 col-form-label">Discount Amount (%)*</label>
-                                    <div class="col-md-2">
-                                        <input type="number" max="100" min="0" ng-init="discount[$index]= p.discountPercent" class="form-control" ng-model="discount[$index]" placeholder="%">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <button class="btn btn-primary" ng-click="update(k,pName[$index],type[$index],desc[$index],promo123[$index],discount[$index],p.imageFileUrl)">Update product</button>
-
-                                    </div>
-                                </div>
-
-                            </fieldset>
-
-
-
+                        <div class="col-md" ng-if="p.discountPercent=='0'">
+                            None
                         </div>
+                    </td>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
+                    <th>
+                        <button type="button" data-toggle="modal" data-target="#productModal{{$index}}" class="btn btn-outline-primary">Edit this item </button>
+                    </th>
 
-                </div>
-
-            </div>
+                </tr>
+            </tbody>
 
 
-            <div class="row" >
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header bg-primary" role="tab" id="headingOne">
-                            <h5 class="mb-0">
-                                <a class="text-white" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="false" aria-controls="collapse" href>
-                                 #{{$index+1}} {{p.productName}}
-                                </a>
-                            </h5>
-                        </div>
-
-                        <div ng-if="$index != 0" id="collapse{{$index}}" class="collapse hide" role="tabpanel" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a href><img src="{{p.imageFileUrl}}" class="image" href ng-click="view()" style="width:200px;height:auto"/></a>
-                                    </div>
-
-                                    <div class="col-md">
-
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <h3>{{p.productName}}</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:20px">
-                                            <div class="col-md-4">
-                                                <h6>Description</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.description}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Product Category</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.productType}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Listing status</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.listing}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Discount Percent</h6>
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}%
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent=='0'">
-                                                None
-                                            </div>
-                                        </div>
-
-                                        <button type="button" data-toggle="modal" data-target="#productModal{{$index}}" style="margin-top:10px" class="btn btn-outline-primary">Edit this item </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="$index == 0" id="collapse{{$index}}" class="collapse show" role="tabpanel" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a href><img src="{{p.imageFileUrl}}" class="image" href ng-click="view()" style="width:200px;height:auto"/></a>
-                                    </div>
-
-                                    <div class="col-md">
-
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <h3>{{p.productName}}</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:20px">
-                                            <div class="col-md-4">
-                                                <h6>Description</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.description}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Product Category</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.productType}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Listing status</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.listing}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Discount Percent</h6>
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}%
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent=='0'">
-                                                None
-                                            </div>
-                                        </div>
-
-                                        <button type="button" style="margin-top:10px" data-toggle="modal" data-target="#productModal{{$index}}" class="btn btn-outline-primary">Edit this item </button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </table>
     </div>
+
+
+
+    <div data-ng-repeat="(k,p) in promo|listed track by $index">
+
+        <div id="productModal{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <fieldset>
+                            <legend>
+                                Product Information
+                            </legend>
+                            <!-- {{p.productName}} -->
+                            <div class="form-group row">
+                                <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
+                                <div class="col-md-7">
+                                    <input type="text" ng-model="pName[$index]" ng-init="pName[$index] =p.productName"
+                                    ng-value="p.productName" class="form-control" id="pName" placeholder="Product Name" >
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Product type*</label>
+                                <!-- {{p.productType}} -->
+
+                                <div class="col-md-4" ng-init="type[$index]=p.productType" >
+                                    <div class="form-check">
+                                        <label for="paint" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="paint" data-ng-model="type[$index]" data-ng-value="'paint'">
+                                            Paint
+                                        </label>
+                                    </div>
+
+
+
+                                    <div class="form-check">
+                                        <label  for="powert" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="powert" data-ng-model="type[$index]" data-ng-value="'powertool'" >
+                                            Power Tool
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label  for="handt"  class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="handt" data-ng-model="type[$index]" data-ng-value="'handtool'">
+                                            Hand tool
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label for="waters"  class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="waters" data-ng-model="type[$index]" data-ng-value="'waterseries'">
+                                            Water Series
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label for="elecs" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="elecs" data-ng-model="type[$index]" data-ng-value="'electricalseries'">
+                                            Electrical Series
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label for="others" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="others" data-ng-model="type[$index]" data-ng-value="'others'">
+                                            Others
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label for="promo" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="promo" data-ng-model="type[$index]" data-ng-value="'promo'">
+                                            Promotion
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md">
+                                    <img src="{{p.imageFileUrl}}" class="image" style="width:160px;height:auto"/>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="desc" class="col-md-3 col-form-label">Product Description</label>
+                                <div class="col-md-7">
+                                    <textarea ng-model="desc[$index]" ng-init="desc[$index]= p.description" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Listing Status*</label>
+
+                                <div class="col-md-7" >
+
+                                    <div class="form-check">
+                                        <label for="false" class="form-check-label">
+                                            <input class="form-check-input" ng-init="promo123[$index]=p.listing" type="radio" id="false" data-ng-model="promo123[$index]" data-ng-value="'false'">
+                                            False
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label for="true" class="form-check-label">
+                                            <input class="form-check-input" type="radio" id="true" data-ng-model="promo123[$index]" data-ng-value="'true'" >
+                                            True
+                                        </label>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <label class="col-md-3 col-form-label">Discount Amount (%)*</label>
+                                <div class="col-md-2">
+                                    <input type="number" max="100" min="0" ng-init="discount[$index]= p.discountPercent" class="form-control" ng-model="discount[$index]" placeholder="%">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-5">
+                                    <button class="btn btn-primary" ng-click="update(k,pName[$index],type[$index],desc[$index],promo123[$index],discount[$index],p.imageFileUrl)">Update product</button>
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!-- modal until here -->
+
+    </div> <!--ng repeat-->
 
 
     <!---------------------------------------------------------->
@@ -304,293 +240,6 @@
 
     <br />
 
-    <div id="accordion" role="tablist" style="overflow-y: scroll; height:400px;" class="rounded">
-        <div data-ng-repeat="(k,p) in promo|unlisted track by $index">
-            <div id="productModal1{{$index}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
-
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <h4 class="modal-title text-white">Edit item: {{p.productName}}</h4>
-                        </div>
-
-                        <div class="modal-body">
-                            <fieldset>
-                                <legend>
-                                    Product Information
-                                </legend>
-                                <!-- {{p.productName}} -->
-
-
-                                <div class="form-group row">
-                                    <label for="pName" class="col-md-3 col-form-label">Product Name*</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="pName[$index]" ng-init="pName[$index] =p.productName"
-                                        ng-value="p.productName" class="form-control" id="pName" placeholder="Product Name" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label">Product type*</label>
-                                    <!-- {{p.productType}} -->
-
-                                    <div class="col-md-7" ng-init="type[$index]=p.productType" >
-                                        <div class="form-check">
-                                            <label for="paint" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="paint" data-ng-model="type[$index]" data-ng-value="'paint'">
-                                                Paint
-                                            </label>
-                                        </div>
-
-
-
-                                        <div class="form-check">
-                                            <label  for="powert" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="powert" data-ng-model="type[$index]" data-ng-value="'powertool'" >
-                                                Power Tool
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label  for="handt"  class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="handt" data-ng-model="type[$index]" data-ng-value="'handtool'">
-                                                Hand tool
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="waters"  class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="waters" data-ng-model="type[$index]" data-ng-value="'waterseries'">
-                                                Water Series
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="elecs" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="elecs" data-ng-model="type[$index]" data-ng-value="'electricalseries'">
-                                                Electrical Series
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="others" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="others" data-ng-model="type[$index]" data-ng-value="'others'">
-                                                Others
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="promo" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="promo" data-ng-model="type[$index]" data-ng-value="'promo'">
-                                                Promotion
-                                            </label>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="desc" class="col-md-3 col-form-label">Product Description</label>
-                                    <div class="col-md-7">
-                                        <textarea ng-model="desc[$index]" ng-init="desc[$index]= p.description" class="form-control" id="desc" placeholder="Description" rows="3"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label">Listing Status*</label>
-
-                                    <div class="col-md-7" >
-
-                                        <div class="form-check">
-                                            <label for="false" class="form-check-label">
-                                                <input class="form-check-input" ng-init="promo123[$index]=p.listing" type="radio" id="false" data-ng-model="promo123[$index]" data-ng-value="'false'">
-                                                False
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <label for="true" class="form-check-label">
-                                                <input class="form-check-input" type="radio" id="true" data-ng-model="promo123[$index]" data-ng-value="'true'" >
-                                                True
-                                            </label>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-
-                                    <label class="col-md-3 col-form-label">Discount Amount (%)*</label>
-                                    <div class="col-md-2">
-                                        <input type="number" max="100" min="0" ng-init="discount[$index]= p.discountPercent" class="form-control" ng-model="discount[$index]" placeholder="%">
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <button class="btn btn-primary" ng-click="update(k,pName[$index],type[$index],desc[$index],promo123[$index],discount[$index],p.imageFileUrl)">Update product</button>
-
-                                    </div>
-                                </div>
-
-                            </fieldset>
-
-
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="row" >
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header bg-primary" role="tab" id="headingOne">
-                            <h5 class="mb-0">
-                                <a class="text-white" data-toggle="collapse" data-target="#collapse1{{$index}}" aria-expanded="false" aria-controls="collapse" href>
-                                 #{{$index+1}} {{p.productName}}
-                                </a>
-                            </h5>
-                        </div>
-
-                        <div ng-if="$index != 0" id="collapse1{{$index}}" class="collapse hide" role="tabpanel" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a href><img src="{{p.imageFileUrl}}" class="image" href ng-click="view()" style="width:200px;height:auto"/></a>
-                                    </div>
-
-                                    <div class="col-md">
-
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <h3>{{p.productName}}</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:20px">
-                                            <div class="col-md-4">
-                                                <h6>Description</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.description}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Product Category</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.productType}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Listing status</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.listing}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Discount Percent</h6>
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}%
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent=='0'">
-                                                None
-                                            </div>
-                                        </div>
-
-                                        <button type="button" data-toggle="modal" data-target="#productModal1{{$index}}" style="margin-top:10px" class="btn btn-outline-primary">Edit this item </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="$index == 0" id="collapse1{{$index}}" class="collapse show" role="tabpanel" data-parent="#accordion">
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a href><img src="{{p.imageFileUrl}}" class="image" href ng-click="view()" style="width:200px;height:auto"/></a>
-                                    </div>
-
-                                    <div class="col-md">
-
-                                        <div class="row">
-                                            <div class="col-md">
-                                                <h3>{{p.productName}}</h3>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:20px">
-                                            <div class="col-md-4">
-                                                <h6>Description</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.description}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Product Category</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.productType}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Listing status</h6>
-                                            </div>
-                                            <div class="col-md">
-                                                {{p.listing}}
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:10px">
-                                            <div class="col-md-4">
-                                                <h6>Discount Percent</h6>
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent!='0'">
-                                                {{p.discountPercent}}%
-                                            </div>
-                                            <div class="col-md" ng-if="p.discountPercent=='0'">
-                                                None
-                                            </div>
-                                        </div>
-
-                                        <button type="button" style="margin-top:10px" data-toggle="modal" data-target="#productModal1{{$index}}" class="btn btn-outline-primary">Edit this item </button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
