@@ -795,15 +795,15 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
     // console.log(firebase.apps.length);
     var defaultStorage ;
 
-    // function checkFlag() {
-    //     if(!firebase.apps.length) {
-    //        window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
-    //     } else {
-    //
-    //       defaultStorage  = firebase.storage().ref();
-    //     }
-    // }
-    // checkFlag();
+    function checkFlag() {
+        if(!firebase.apps.length) {
+           window.setTimeout(checkFlag, 1); /* this checks the flag every 100 milliseconds*/
+        } else {
+
+          defaultStorage  = firebase.storage().ref();
+        }
+    }
+    checkFlag();
 
 
     socket.on("productSuccess",()=>{
