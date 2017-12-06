@@ -14,6 +14,17 @@ var config = {
     messagingSenderId: "642003666233"
 };
 
+
+// var config = {
+//     apiKey: "AIzaSyCSqeJ0FYFDBpzFIF1rgHKHtyVpDjbE6Fg",
+//     authDomain: "dbesttest-66a95.firebaseapp.com",
+//     databaseURL: "https://dbesttest-66a95.firebaseio.com",
+//     projectId: "dbesttest-66a95",
+//     storageBucket: "dbesttest-66a95.appspot.com",
+//     messagingSenderId: "554583986059"
+//   };
+
+
 // var config = {
 //     apiKey: "AIzaSyDhSwnH4r5RcP-AFErHDdh3kjFfyyOr7kc",
 //     authDomain: "cloudnotification-afe9c.firebaseapp.com",
@@ -33,11 +44,7 @@ app.use('/css',express.static(__dirname + '/node_modules/bootstrap/dist/css')); 
 
 app.use('/js',express.static(__dirname+'/node_modules/popper.js/dist/umd/'));
 
-
-
-
 app.use('/js', express.static(__dirname + '/node_modules/firebase'));
-
 
 app.use('/js', express.static(__dirname + '/node_modules/angular'));
 app.use('/js', express.static(__dirname + '/assets'));
@@ -541,6 +548,7 @@ socket.on("connection",(client)=>{
     });
 
     client.on("updateProduct",(key,product,oriType)=>{
+        console.log('trying to update product');
         var update = {};
         update['/product/'+oriType+'/'+key] = {};
 
@@ -569,6 +577,7 @@ socket.on("connection",(client)=>{
     });
 
     client.on("addProduct",(product)=>{
+        console.log('trying to add product');
         var a = database.ref('/product/'+product.productType+'/').push(product)
         .then(()=>{
             client.emit("productSuccess");

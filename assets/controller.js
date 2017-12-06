@@ -360,6 +360,7 @@ app.controller("chatCtrl",($scope, $log,$stateParams, messageService,$state,inqS
 
             var imgRef = defaultStorage.child('photos'+ '/'+$stateParams.id+'/'+element.files[0].name);
 
+
             var fileReader = new FileReader();
             fileReader.onload = ()=>{
                 $scope.loadedFile = fileReader.result;
@@ -725,7 +726,9 @@ app.controller("listProductCtrl",($scope,promoService)=>{
                 $scope.showbar = true;
 
 
-                var imgRef = defaultStorage.child('promo'+ '/'+ type +'/'+element.files[0].name);
+                // var imgRef = defaultStorage.child('promo'+ '/'+ type +'/'+element.files[0].name);
+                var imgRef = defaultStorage.child('promo'+ '/'+ type +'/'+productName+'.'+element.files[0].name.split('.')[element.files[0].name.split('.').length-1]);
+
 
                 var uploadTask = imgRef.put(element.files[0]);
                 uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,function(snapshot) {
@@ -839,7 +842,12 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
                     $scope.selected = false;
 
                     $scope.showbar = true;
-                    var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+element.files[0].name);
+
+                    // var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+element.files[0].name);
+
+                    var imgRef = defaultStorage.child('promo'+ '/'+ $scope.type +'/'+$scope.pName+'.'+element.files[0].name.split('.')[element.files[0].name.split('.').length-1]);
+                    // console.log(element.files[0].name.split('.')[element.files[0].name.split('.').length-1]);
+                    // console.log(imgRef);
 
                     var uploadTask = imgRef.put(element.files[0]);
                     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,function(snapshot) {
@@ -855,6 +863,7 @@ app.controller("addProductCtrl",($scope,$state,promoService)=>{
                         alert("error uploading, please try again")
                     }, function() {
                         // Upload completed successfully, now we can get the download URL
+                        console.log('done upload, trying to submit');
                         var downloadURL = uploadTask.snapshot.downloadURL;
 
                         $scope.submitForm(downloadURL);
