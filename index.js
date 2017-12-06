@@ -54,11 +54,11 @@ app.use('/js',express.static(__dirname + '/node_modules/firebase'));
 app.use('/templates', express.static(__dirname + '/templates')); //template html
 app.use('/js',express.static(__dirname + '/node_modules/angular-ui-router/release')); // redirect angular-ui-router
 
-app.use('/js',express.static(__dirname + '/node_modules/material-design-lite/dist'));
-app.use('/css',express.static(__dirname + '/node_modules/material-design-lite/dist'));
+// app.use('/js',express.static(__dirname + '/node_modules/material-design-lite/dist'));
+// app.use('/css',express.static(__dirname + '/node_modules/material-design-lite/dist'));
 
-app.use('/css',express.static(__dirname + '/node_modules/angular-material/'));
-app.use('/js',express.static(__dirname + '/node_modules/angular-material/'));
+// app.use('/css',express.static(__dirname + '/node_modules/angular-material/'));
+// app.use('/js',express.static(__dirname + '/node_modules/angular-material/'));
 app.use('/js',express.static(__dirname + '/node_modules/angular-animate/'));
 app.use('/js',express.static(__dirname + '/node_modules/angular-aria/'));
 
@@ -66,15 +66,15 @@ app.use('/js',express.static(__dirname + '/node_modules/angular-aria/'));
 app.use('/js',express.static(__dirname + '/node_modules/imageviewer/dist'));
 app.use('/css',express.static(__dirname + '/node_modules/imageviewer/dist'));
 
-app.use('/js',express.static(__dirname+ '/node_modules/angular-cookies/'));
+// app.use('/js',express.static(__dirname+ '/node_modules/angular-cookies/'));
 
 
 // app.use('/css',express.static(__dirname+'/assets/emoji-picker/lib/css'));
 // app.use('/js',express.static(__dirname+'/assets/emoji-picker/lib/js'));
 // app.use('/img',express.static(__dirname+'/assets/emoji-picker/lib/img'));
 
-app.use('/css',express.static(__dirname+'/node_modules/chartist/dist/'));
-app.use('/js',express.static(__dirname+'/node_modules/chartist/dist/'));
+// app.use('/css',express.static(__dirname+'/node_modules/chartist/dist/'));
+// app.use('/js',express.static(__dirname+'/node_modules/chartist/dist/'));
 
 
 

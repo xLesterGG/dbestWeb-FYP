@@ -1,5 +1,5 @@
 // var app = angular.module("myApp",['ui.router','ngMaterial','ngCookies']);
-var app = angular.module("myApp",['ui.router','ngCookies']);
+var app = angular.module("myApp",['ui.router']);
 
 document.addEventListener('DOMContentLoaded', function () { // for notifications
     if (!Notification) {
@@ -140,7 +140,7 @@ socket.on("getConfig",(c)=>{
 
 
 
-app.controller("loginCtrl",($scope,$state,$cookieStore)=>{
+app.controller("loginCtrl",($scope,$state)=>{
 
     $scope.login = (email,pass)=>{
 
